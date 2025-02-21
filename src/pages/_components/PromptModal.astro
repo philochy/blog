@@ -1,0 +1,44 @@
+---
+import type { ImageMetadata } from 'astro';
+
+import Form from '@/components/base/Form.astro';
+import Image from '@/components/base/Image.astro';
+import Modal from '@/components/ui/Modal.astro';
+
+import { formConfig as config } from '@/config/theme';
+import { ModalKeys } from '@/types/enum';
+
+interface Props {
+  image: string | ImageMetadata;
+  title: string;
+  btnText: string;
+}
+const { image, title, btnText } = Astro.props;
+
+const modalName = ModalKeys.PROMPT;
+---
+
+<Modal {modalName}>
+  <div class="flex">
+    <div class="w-1/12 md:w-2/5">
+      <Image
+        src={image}
+        alt="dialog-image"
+        class="h-full object-cover"
+        loading="lazy"
+      />
+    </div>
+    <div class="flex flex-1 flex-col gap-small p-5 lg:p-10">
+      <p class="font-sans text-lg lg:text-base">{title}</p>
+      <form
+        class="flex flex-1 flex-col gap-large"
+        data-form-submit
+        data-type="send-inquiry"
+        method="post"
+      >
+        <Form {config} />
+        <button type="submit" class="form-btn">{btnText}</button>
+      </form>
+    </div>
+  </div>
+</Modal>

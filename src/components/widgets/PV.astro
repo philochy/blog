@@ -1,0 +1,15 @@
+---
+import { Icon } from 'astro-icon/components';
+interface Props {
+  pv: string | number;
+}
+const { pv } = Astro.props;
+---
+
+<div class="flex items-center gap-[0.0625rem] opacity-0">
+  <Icon
+    name="tabler:eye"
+    class="vertical-bottom vertical-start mb-[0.1875rem] inline-block h-[1.25rem] w-[1.25rem]"
+  />
+  <div class="text-card-tag leading-card-tag">{pv}</div>
+</div>

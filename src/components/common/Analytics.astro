@@ -1,0 +1,16 @@
+---
+import { GoogleAnalytics } from '@astrolib/analytics';
+import * as envConfig from 'virtual:config-loader';
+
+import { isDev } from '@/utils';
+
+const {
+  analytics: {
+    vendors: {
+      googleAnalytics: { id },
+    },
+  },
+} = envConfig;
+---
+
+{!isDev && id ? <GoogleAnalytics id={String(id)} partytown /> : null}

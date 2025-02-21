@@ -1,0 +1,28 @@
+---
+import Form from '@/components/base/Form.astro';
+
+import { formConfig } from '@/config/theme';
+
+interface Props {
+  title: string;
+  formBtnText: string;
+  desc: string;
+}
+const { title, desc, formBtnText } = Astro.props;
+---
+
+<div class="hidden space-y-[0.625rem] bg-gray-light p-[1.875rem] md:block">
+  <p class="text-card-title leading-card-title text-primary-dark-blue">
+    {title}
+  </p>
+  <aside class="text-card-desc leading-card-desc text-gray-dark">{desc}</aside>
+  <form
+    class="flex flex-1 flex-col gap-large"
+    data-form-submit
+    method="post"
+    data-type="send-inquiry"
+  >
+    <Form config={formConfig.filter((item) => item.__type === 'email')} />
+    <button type="submit" class="form-btn">{formBtnText}</button>
+  </form>
+</div>

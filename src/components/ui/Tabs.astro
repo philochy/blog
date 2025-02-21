@@ -1,0 +1,59 @@
+---
+import { twMerge } from 'tailwind-merge';
+
+import Link from '../base/Link.astro';
+
+import { TABS_MAX_LENGTH } from '@/config/config';
+interface Tab {
+  /**
+   * 标签上显示的文本
+   */
+  label: string;
+
+  /**
+   * 标签的唯一标识符
+   */
+  key: string;
+
+  /**
+   * 标签指向的 URL
+   */
+  link: string;
+}
+
+interface Props {
+  /**
+   * 要显示的标签对象数组
+   */
+  tabs: Tab[];
+
+  /**
+   * 当前激活标签的 key
+   */
+  activeKey: string;
+
+  /**
+   * 可选的额外 CSS 类名，用于样式化
+   */
+  className?: string;
+}
+const { tabs, activeKey, className = '' } = Astro.props;
+---
+
+<nav class={twMerge(`grid grid-cols-2 md:grid-cols-5`, 'gap-small', className)}>
+  {
+    tabs.slice(0, TABS_MAX_LENGTH).map((item) => (
+      <Link
+        href={item.link}
+        class:list={[
+          'inline-block text-tabs leading-tabs py-tab-y uppercase font-sans break-all text-center cursor-pointer',
+          activeKey === item.link
+            ? '!text-white bg-primary-dark-blue'
+            : '!text-gray-dark bg-gray-light hover:bg-gray-200',
+        ]}
+      >
+        <div class="line-clamp-1">{item.label}</div>
+      </Link>
+    ))
+  }
+</nav>

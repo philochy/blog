@@ -1,0 +1,30 @@
+---
+import { Icon } from 'astro-icon/components';
+
+import LanguageList from './LanguageList.astro';
+
+import LanguageJson from '@/config/language.json';
+
+const {
+  url: { hostname },
+} = Astro;
+const subdomain = hostname.split('.')[0];
+const language =
+  LanguageJson.filter((item) => item.href === subdomain)[0]?.language ||
+  'English';
+---
+
+<div
+  class="flex h-full justify-between gap-5"
+  x-data="{ openLanguageList: false }"
+>
+  <div
+    class="text-haeder-text flex cursor-pointer select-none items-center gap-1"
+    x-on:click="openLanguageList = !openLanguageList"
+  >
+    <!-- <Icon name="tabler:world" class:list={['w-[21px] h-[21px]']} /> -->
+    <span>{language}</span>
+    <Icon name="tabler:chevron-down" />
+  </div>
+  <LanguageList />
+</div>

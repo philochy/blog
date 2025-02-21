@@ -1,0 +1,40 @@
+---
+import { twMerge } from 'tailwind-merge';
+
+import type { FormItem } from '@/types/globals';
+import type { HTMLAttributes } from 'astro/types';
+
+interface Props {
+  config: FormItem[];
+}
+const { config } = Astro.props;
+---
+
+<Fragment>
+  {
+    config.map((item) => (
+      <Fragment>
+        {item.type === 'input' && (
+          <input
+            class={twMerge('form-input', item.className || '')}
+            type={item.__type as HTMLAttributes<'input'>['type']}
+            placeholder={item.placeholder}
+            id={item.id || ''}
+            name={item.name || ''}
+            required={item.required}
+          />
+        )}
+        {item.type === 'textarea' && (
+          <textarea
+            class={twMerge('form-input resize-none', item.className || '')}
+            placeholder={item.placeholder}
+            name={item.name || ''}
+            id={item.id || ''}
+            rows={item.rows || '4'}
+            required={item.required}
+          />
+        )}
+      </Fragment>
+    ))
+  }
+</Fragment>

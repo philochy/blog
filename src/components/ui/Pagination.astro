@@ -1,0 +1,110 @@
+---
+import { Icon } from 'astro-icon/components';
+
+import Link from '../base/Link.astro';
+
+import { ensureNoTrailingSlash } from '@/utils';
+
+interface Props {
+  current: number;
+  total: number;
+  pageSize: number;
+}
+const { current, total, pageSize } = Astro.props;
+const pathname = ensureNoTrailingSlash(
+  Astro.url.pathname === '/' ? '/all-tags' : Astro.url.pathname
+);
+let newHref;
+if (pathname.includes('/page-')) {
+  newHref = pathname.replace(/\/page-\d+/, `/page-`);
+} else {
+  newHref = `${pathname === '/' ? '' : pathname}/page-`;
+}
+
+const totalPages = Math.ceil(total / pageSize);
+// const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
+const prevPage = current > 1 ? current - 1 : null;
+const nextPage = current < totalPages ? current + 1 : null;
+const generatePageNumbers = (
+  current: number,
+  totalPages: number,
+  maxVisiblePages = 5
+) => {
+  const pages: (number | '...')[] = [];
+  const buffer = Math.floor(maxVisiblePages / 2);
+
+  if (current > buffer + 1) {
+    pages.push(1);
+    if (current > buffer + 2) {
+      pages.push('...');
+    }
+  }
+
+  for (
+    let i = Math.max(1, current - buffer);
+    i <= Math.min(totalPages, current + buffer);
+    i++
+  ) {
+    pages.push(i);
+  }
+
+  if (current < totalPages - buffer) {
+    if (current < totalPages - buffer - 1) {
+      pages.push('...');
+    }
+    pages.push(totalPages);
+  }
+
+  return pages;
+};
+
+const pages = generatePageNumbers(current, totalPages);
+---
+
+<div
+  class="flex w-full justify-between border border-t-[0.0625rem] border-transparent border-t-[#EEEEEE]"
+>
+  <div>
+    {
+      prevPage ? (
+        <Link href={newHref + prevPage} class="pagination-link">
+          <Icon name="tabler:circle-arrow-left" />
+          Previous Page
+        </Link>
+      ) : (
+        <span class="pagination-link disabled">
+          <Icon name="tabler:circle-arrow-left" />
+          Previous Page
+        </span>
+      )
+    }
+  </div>
+  <div class="hidden md:-mt-px md:flex">
+    {
+      pages.map((page, _) =>
+        page === '...' ? (
+          <span class="page-number">...</span>
+        ) : (
+          <Link href={newHref + page} class="page-number">
+            {`${page}`}
+          </Link>
+        )
+      )
+    }
+  </div>
+  <div>
+    {
+      nextPage ? (
+        <Link href={newHref + nextPage} class="pagination-link">
+          Next Page
+          <Icon name="tabler:circle-arrow-right" />
+        </Link>
+      ) : (
+        <span class="pagination-link disabled">
+          Next Page
+          <Icon name="tabler:circle-arrow-right" />
+        </span>
+      )
+    }
+  </div>
+</div>

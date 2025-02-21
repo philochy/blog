@@ -1,0 +1,19 @@
+database:
+  DB_NAME: icms_en_86b5fa70ab9311ef8448a92ec0d170eb
+
+environment:
+  ORIGIN: zhaoxblog.com
+  BASE_URL: http://47.103.88.39:7006
+  STATIC_BASE: https://static.aixdb.cn
+  DOMIN: null
+  NODE_ENV: development
+  OUTDIR: ./dist
+  
+reporting:
+  REQUEST_URL: https://ipadmin.aixdb.cn/ipadmin/api/ask/add
+
+
+analytics:
+  vendors:
+    googleAnalytics:
+      id: null # off in dev

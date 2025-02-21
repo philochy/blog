@@ -1,0 +1,19 @@
+database:
+  DB_NAME: icms_en_697f4940e81911ee9f4c896939108d74
+
+environment:
+  ORIGIN: defaul.com
+  BASE_URL: http://47.103.88.39:7006
+  STATIC_BASE: ''
+  DOMIN: b1
+  NODE_ENV: production
+  OUTDIR: D:/somyshare/libraries/static-dist/zhaoxblog.aixdb.cn
+
+reporting:
+  REQUEST_URL: https://ipadmin.aixdb.cn/ipadmin/api/ask/add
+
+
+analytics:
+  vendors:
+    googleAnalytics:
+      id: null # or "G-XXXXXXXXXX"

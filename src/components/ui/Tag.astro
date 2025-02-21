@@ -1,0 +1,18 @@
+---
+interface Props {
+  bgColor?: string;
+  textColor?: string;
+  style?: string;
+  className?: string;
+}
+const { bgColor = '#f0f0f0', textColor = 'text-white', style } = Astro.props;
+---
+
+<div
+  class:list={[
+    'w-fit rounded-md px-card-x-tag py-card-y-tag text-card-tag leading-card-tag',
+  ]}
+  style={`--tag-bg-color: ${bgColor};--tag-text-color:${textColor}; background-color: var(--tag-bg-color);color:${textColor};${style}`}
+>
+  <slot />
+</div>

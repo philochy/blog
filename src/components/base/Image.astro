@@ -1,0 +1,66 @@
+---
+import { findImage } from '@/utils/images';
+
+import type { HTMLAttributes } from 'astro/types';
+
+import { type ImageProps } from '@/types/globals';
+
+type Props = ImageProps;
+interface ImageType {
+  src: string;
+  attributes: HTMLAttributes<'img'>;
+}
+
+const props = Astro.props;
+
+if (props.alt === undefined || props.alt === null) {
+  // throw new Error();
+}
+
+if (typeof props.width === 'string') {
+  props.width = parseInt(props.width);
+}
+
+if (typeof props.height === 'string') {
+  props.height = parseInt(props.height);
+}
+
+if (!props.loading) {
+  props.loading = 'lazy';
+}
+
+if (!props.decoding) {
+  props.decoding = 'async';
+}
+
+const _image = await findImage(props.src);
+let image: ImageType | undefined = undefined;
+
+if (typeof _image === 'string') {
+  image = {
+    src: _image,
+    attributes: { ...props, src: undefined },
+  };
+} else if (_image && _image.src && typeof _image.src === 'string') {
+  image = {
+    src: _image.src,
+    attributes: { ...props, src: undefined },
+  };
+}
+---
+
+{
+  !image ? (
+    <Fragment />
+  ) : (
+    <>
+      <img
+        src={image.src}
+        crossorigin="anonymous"
+        referrerpolicy="no-referrer"
+        {...image.attributes}
+        alt={props.alt}
+      />
+    </>
+  )
+}

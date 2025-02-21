@@ -1,0 +1,20 @@
+---
+import type { GetStaticPaths } from 'astro';
+
+import { findAllTags } from '@/utils/tags';
+
+import ListView from '../index.astro';
+
+export const getStaticPaths = (async () => {
+  const tags = await findAllTags();
+
+  return tags.map((item) => ({
+    params: { type: item.path.split('/')[1] },
+    props: {
+      active: { ename: item.ename === 'All' ? null : item.ename },
+    },
+  }));
+}) satisfies GetStaticPaths;
+---
+
+<ListView ename={Astro.props.active.ename || null} />

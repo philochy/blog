@@ -1,0 +1,111 @@
+---
+import { Icon } from 'astro-icon/components';
+
+import Image from '@/components/base/Image.astro';
+import Link from '@/components/base/Link.astro';
+import Tag from '@/components/ui/Tag.astro';
+import AuthorBadge from '@/components/widgets/AuthorBadge.astro';
+import PV from '@/components/widgets/PV.astro';
+import ShareList from '@/components/widgets/ShareList.astro';
+import Time from '@/components/widgets/Time.astro';
+
+import type DetailCard from './DetailCard.astro';
+import type { ComponentProps } from 'astro/types';
+type Props = ComponentProps<typeof DetailCard>;
+const {
+  title,
+  desc,
+  imageUrl,
+  tag: nextTag,
+  time,
+  pv,
+  path,
+  name,
+  avatar,
+} = Astro.props;
+---
+
+<Link href={path} class="group flex flex-col">
+  <div>
+    <Image
+      src={imageUrl}
+      alt={title}
+      loading="lazy"
+      class={'block !h-[26.0625rem] !max-h-none !w-full !max-w-none object-cover md:!h-[18rem] md:!w-[26.0625rem]'}
+    />
+  </div>
+  <div
+    class="flex flex-1 flex-col justify-between space-y-[1.25rem] bg-gray-light px-[2.5rem] py-[1.875rem] md:p-[1.25rem]"
+  >
+    <div
+      class="flex items-center justify-between text-[#AAAAAA] group-hover:text-primary-dark-blue"
+    >
+      <div class="flex w-[200px] gap-[0.125rem]">
+        {
+          nextTag.map((tag) => (
+            <Tag
+              textColor={tag.color || 'text-primary-dark-blue'}
+              bgColor={tag.background || 'opacity-0'}
+            >
+              <div class="line-clamp-1">{tag.ename}</div>
+            </Tag>
+          ))
+        }
+      </div>
+      <div class="flex items-center gap-2 md:min-w-[150px]">
+        <PV {pv} />|
+        <Time {time} />
+      </div>
+    </div>
+    <h3
+      class="... mb-[0.5rem] line-clamp-2 font-heading text-card-title leading-card-title text-dark group-hover:text-primary-dark-blue md:line-clamp-1"
+      style="overflow-wrap: anywhere;"
+    >
+      {title}
+    </h3>
+    <aside
+      class="line-clamp-4 font-serif text-card-desc leading-card-desc text-gray-dark md:line-clamp-3"
+    >
+      {desc}&nbsp;
+    </aside>
+    <div class="flex items-center justify-between">
+      <AuthorBadge {name} {avatar} />
+      <ShareList
+        {title}
+        slug={desc}
+        description={desc}
+        url={path}
+        className="flex gap-[1.25rem] md:hidden"
+        type="1"
+      />
+      <div
+        x-data="{ open: false }"
+        class="hidden text-[#AAAAAA] md:mt-1 md:block md:w-6/12 md:text-end"
+      >
+        <button x-on:click.prevent="open = !open" x-show="!open">
+          <Icon
+            name="tabler:share"
+            class="h-[1.875rem] w-[1.875rem] md:h-[1.5rem] md:w-[1.5rem]"
+          /></button
+        >
+        <div x-show="open">
+          <ShareList
+            {title}
+            slug={desc}
+            description={desc}
+            url={path}
+            type="1"
+            className="justify-end"
+          >
+            <Icon
+              name="tabler:x"
+              x-on:click.prevent="open = !open"
+              class="h-[1.875rem] w-[1.875rem] text-primary-dark-blue md:h-[1.5rem] md:w-[1.5rem]"
+              slot="close-btn-end"
+            />
+          </ShareList>
+        </div>
+      </div>
+    </div>
+  </div>
+</Link>

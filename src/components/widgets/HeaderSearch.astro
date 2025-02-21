@@ -1,0 +1,15 @@
+---
+import { Icon } from 'astro-icon/components';
+
+import SearchBar from '../ui/SearchBar.astro';
+---
+
+<SearchBar
+  type="outline"
+  className="order-1"
+  inputClassName="!bg-[#eaeaea] rounded-lg translate-x-[-1.25rem] !h-[3.125rem] focus:!ring-0 border-none"
+  placeholder=""
+  actions="origin-search"
+>
+  <Icon name="tabler:search" class:list={'text-dark h-[1.25rem] w-[1.25rem]'} />
+</SearchBar>

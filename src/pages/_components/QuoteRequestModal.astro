@@ -1,0 +1,35 @@
+---
+import Form from '@/components/base/Form.astro';
+import Modal from '@/components/ui/Modal.astro';
+
+import { formConfig as config } from '@/config/theme';
+import { ModalKeys } from '@/types/enum';
+interface Props {
+  formBtnText: string;
+  content: string;
+}
+const { formBtnText, content } = Astro.props;
+const modalName = ModalKeys.CONFIRM;
+---
+
+<div class="hidden space-y-[0.625rem] bg-gray-light p-[1.875rem] md:block">
+  <p
+    class="text-text-dark text-card-desc leading-card-desc"
+    set:html={content}
+  />
+  <button type="button" class="open-modal form-btn">{formBtnText}</button>
+  <Modal {modalName} bodyClassName="w-fit">
+    <div class="w-[26.25rem] space-y-1 p-[2.5rem]">
+      <p class="text-gray-dark">Fill in your email to get a quote.</p>
+      <form
+        class="flex flex-1 flex-col gap-large"
+        data-form-submit
+        method="post"
+        data-type="download"
+      >
+        <Form {config} />
+        <button type="submit" class="form-btn">Get A Free Quote</button>
+      </form>
+    </div>
+  </Modal>
+</div>

@@ -1,0 +1,27 @@
+---
+import type { ImageMetadata } from 'astro';
+
+import { twMerge } from 'tailwind-merge';
+
+import Image from '@/components/base/Image.astro';
+
+import avatarImage from '@/assets/image/avatar.png';
+
+interface Props {
+  name: string;
+  avatar: string | ImageMetadata;
+  className?: string;
+}
+const { name, avatar = avatarImage, className } = Astro.props;
+---
+
+<div class={twMerge('flex items-center gap-[0.8125rem] text-dark', className)}>
+  <Image
+    src={avatar}
+    alt={name}
+    class="!h-[3rem] !w-[3rem] rounded-full md:!h-[2.5rem] md:!w-[2.5rem]"
+  />
+  <span class="line-clamp-1 font-sans text-card-title leading-card-title"
+    >{name}</span
+  >
+</div>

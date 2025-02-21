@@ -1,0 +1,261 @@
+---
+import { Icon } from 'astro-icon/components';
+
+import Image from '@/components/base/Image.astro';
+import Link from '@/components/base/Link.astro';
+import SearchBar from '@/components/ui/SearchBar.astro';
+import Tabs from '@/components/ui/Tabs.astro';
+import TabSelect from '@/components/ui/TabSelect.astro';
+import TabSwitch from '@/components/ui/TabSwitch.astro';
+
+import { findAllTags } from '@/utils/tags';
+
+import type { Banner } from '@/types/api';
+
+import { theme } from '@/config/theme';
+import { ensureNoTrailingSlash } from '@/utils';
+
+type AvailableStyles = (typeof theme)['banner']['availableStyles'];
+interface Props {
+  bannerStyle: AvailableStyles[number]['styleId'];
+  bannerConfig: Record<number, Banner[]>;
+}
+
+const { bannerStyle: styleId, bannerConfig } = Astro.props;
+
+const getImageSrcSet = (images: Banner[]) =>
+  images
+    .map((image) => {
+      if (image.width < 800) {
+        return [
+          `${encodeURI(image.url)} 375w`,
+          `${encodeURI(image.url)} 500w`,
+          `${encodeURI(image.url)} 700w`,
+          `${encodeURI(image.url)} ${image.width}w`,
+        ].join(', ');
+      } else {
+        return `${encodeURI(image.url)} ${image.width}w`;
+      }
+    })
+    .join(', ');
+const tabs = (await findAllTags()).map((item) => ({
+  key: item.ename,
+  label: item.ename,
+  link: item.path,
+}));
+
+const activeKey = ensureNoTrailingSlash(
+  Astro.url.pathname === '/' ? '/all-tags' : Astro.url.pathname
+);
+---
+
+<div class="mb-[1.25rem] md:mb-[2.5rem]">
+  {
+    styleId === 'default' && (
+      <Fragment>
+        <div class="service-carousel">
+          <div class="swiper">
+            <div class="swiper-wrapper">
+              {Object.entries({ ...bannerConfig }).map(([_, images]) => (
+                <div class="swiper-slide">
+                  <Image
+                    class="!h-[31.25rem] !w-[46.875rem] object-cover md:!h-[57.5rem] md:!w-[120rem]"
+                    srcset={getImageSrcSet(images)}
+                    sizes="(max-width: 768px) 50vw, (max-width: 1200px) 1020px, 1920px"
+                    src={images[0].url}
+                    alt={images[0].title || `Banner ${_}`}
+                  />
+                  <div class="absolute inset-0 z-20 flex h-full flex-col justify-between px-[1.875rem] py-[3.1875rem] text-text-white md:w-2/4 md:pb-[16.25rem] md:pl-[5.9375rem] md:pt-[14.6875rem]">
+                    <h3 class="line-clamp-3 font-heading text-banner-title font-semibold leading-banner-title">
+                      {images[0].title || ''}
+                    </h3>
+                    <p class="line-clamp-[8] font-sans text-banner-desc leading-banner-desc">
+                      {images[0]?.content || ''}
+                    </p>
+                    <Link
+                      href={images[0]?.linkurl || '#'}
+                      class="bg-primary-dark-blue px-banner-btn-x py-banner-btn-y text-center text-banner-btn leading-banner-btn text-text-white md:w-fit"
+                    >
+                      READ NOW
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div class="pagination pagination-default absolute !left-[5.9375rem] md:z-10" />
+            <div class="absolute left-[5.9375rem] top-[5rem] text-breadcrumb leading-breadcrumb text-text-white md:z-10">
+              <Link href="/">Home</Link>
+              <span>&gt;</span>
+              <Link href="/">Blog</Link>
+            </div>
+          </div>
+        </div>
+        <div class="section mt-[1.5rem] md:mt-[2.5rem]">
+          <div class="grid gap-[1.25rem] md:grid-cols-[80.625rem_1fr] md:gap-[1.75rem]">
+            <Tabs {activeKey} {tabs} className="order-2 md:order-1" />
+            <SearchBar type="solid" className="order-1" />
+          </div>
+        </div>
+      </Fragment>
+    )
+  }
+  {
+    styleId === 'left-image' && (
+      <Fragment>
+        <div class="service-carousel">
+          <div class="swiper">
+            <div class="swiper-wrapper">
+              {Object.entries({ ...bannerConfig }).map(([_, images]) => (
+                <div class="swiper-slide">
+                  <div class="flex flex-col justify-end gap-[1.25rem] md:flex-row md:gap-[2.75rem]">
+                    <Image
+                      class="h-[31.25rem] !w-[46.875rem] object-cover md:order-2 md:h-[44rem] md:!w-[77.875rem]"
+                      srcset={getImageSrcSet(images)}
+                      sizes="(max-width: 768px) 50vw, (max-width: 1200px) 1020px, 1920px"
+                      src={images[0].url}
+                      alt={images[0].title || `Banner ${_}`}
+                    />
+                    <div class=" mx-[1.875rem] flex flex-col md:order-1 md:ml-[4.0625rem] md:w-[31.875rem] md:gap-[3.75rem] md:py-[4.375rem]">
+                      <div class="hidden text-breadcrumb leading-breadcrumb md:block">
+                        <Link href="/">Home</Link>
+                        <span>&gt;</span>
+                        <Link href="/" class="text-primary-dark-blue">
+                          Blog
+                        </Link>
+                      </div>
+                      <div class="flex flex-col">
+                        <h3 class="line-clamp-3 break-all font-heading text-banner-title leading-banner-title text-primary-dark-blue">
+                          {images[0].title}
+                        </h3>
+                        <p class="mt-[0.625rem] line-clamp-[9] font-sans text-banner-desc leading-banner-desc text-dark">
+                          {images[0]?.content || ''}
+                        </p>
+                        <Link
+                          href={images[0]?.linkurl || '#'}
+                          class="mt-[1.25rem] bg-primary-dark-blue px-banner-btn-x  py-banner-btn-y text-center text-banner-btn leading-banner-btn text-text-white md:w-fit"
+                        >
+                          READ NOW
+                        </Link>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div class="pagination pagination-left-image absolute !left-[45.25rem]  md:z-10" />
+          </div>
+        </div>
+        <div class="section mt-[1.5rem] md:mt-[2.5rem]">
+          <div class="grid gap-[1.25rem] md:grid-cols-[80.625rem_26.0625rem] md:gap-[1.75rem]">
+            <TabSwitch {activeKey} {tabs} className="order-2 md:order-1" />
+            <SearchBar type="solid" className="order-1" />
+          </div>
+        </div>
+      </Fragment>
+    )
+  }
+  {
+    styleId === 'full-width' && (
+      <Fragment>
+        <div class="service-carousel">
+          <div class="swiper">
+            <div class="swiper-wrapper">
+              {Object.entries({ ...bannerConfig }).map(([_, images]) => (
+                <div class="swiper-slide">
+                  <Image
+                    class="h-[12.1875rem] w-[46.875rem] object-cover md:h-[31.25rem] md:w-[120rem]"
+                    srcset={getImageSrcSet(images)}
+                    sizes="(max-width: 768px) 50vw, (max-width: 1200px) 1020px, 1920px"
+                    src={images[0].url}
+                    alt={images[0].title || `Banner ${_}`}
+                  />
+                  <div class="inset-0 z-20 mb-[0] mt-[1.25rem] flex h-full flex-col justify-between px-[1.875rem] md:absolute md:w-[64rem] md:gap-0 md:py-[3.1875rem] md:pl-[5.9375rem] md:pt-[9.0625rem]">
+                    <h3 class="line-clamp-2 font-heading text-banner-title font-semibold leading-banner-title text-primary-dark-blue md:text-text-white">
+                      {images[0].title || ''}
+                    </h3>
+                    <p class="mb-[1.3125rem] mt-[1.125rem] line-clamp-[3] font-sans text-banner-desc leading-banner-desc text-dark md:my-0 md:text-text-white">
+                      {images[0]?.content || ''}
+                    </p>
+                    <Link
+                      href={images[0]?.linkurl || '#'}
+                      class="bg-primary-dark-blue px-banner-btn-x py-banner-btn-y text-center text-banner-btn leading-banner-btn text-text-white md:w-fit"
+                    >
+                      READ NOW
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div class="pagination pagination-full-width absolute !left-[108.6875rem] md:z-10" />
+            <div class="absolute left-[5.9375rem] top-[5rem] text-breadcrumb leading-breadcrumb text-text-white md:z-10">
+              <Link href="/">Home</Link>
+              <span>&gt;</span>
+              <Link href="/">Blog</Link>
+            </div>
+          </div>
+        </div>
+        <div class="section mt-[1.5rem] md:mt-[2.5rem]">
+          <div class="grid gap-[1.25rem] md:w-[80.625rem] md:grid-cols-[auto_26.0625rem] md:gap-[1.75rem]">
+            <TabSelect {activeKey} {tabs} className="order-2 md:order-1" />
+            <SearchBar type="outline" className="order-1">
+              <Icon
+                name="tabler:search"
+                class:list={
+                  'text-dark w-[2.1875rem] h-[2.1875rem] md:w-[2.75rem] md:h-[2.75rem]'
+                }
+              />
+            </SearchBar>
+          </div>
+        </div>
+      </Fragment>
+    )
+  }
+  <style>
+    /* banner default style */
+    .service-carousel .pagination-default {
+      --swiper-pagination-bottom: 6.1875rem;
+      --swiper-pagination-color: var(--text-white);
+      --swiper-pagination-bullet-width: 1.25rem;
+      --swiper-pagination-bullet-height: 1.25rem;
+      --swiper-pagination-bullet-inactive-color: #818181;
+    }
+    /* banner left-image style */
+    .service-carousel .pagination-left-image {
+      --swiper-pagination-bottom: 3.125rem;
+      --swiper-pagination-color: var(--text-white);
+      --swiper-pagination-bullet-width: 1.25rem;
+      --swiper-pagination-bullet-height: 1.25rem;
+      --swiper-pagination-bullet-inactive-color: #818181;
+    }
+    /* banner full-width  style */
+    .service-carousel .pagination-full-width {
+      --swiper-pagination-bottom: 3.125rem;
+      --swiper-pagination-color: var(--text-white);
+      --swiper-pagination-bullet-width: 1.25rem;
+      --swiper-pagination-bullet-height: 1.25rem;
+      --swiper-pagination-bullet-inactive-color: #818181;
+    }
+  </style>
+  <script>
+    /* eslint-disable prettier/prettier */
+    import { Swiper } from 'swiper';
+    import 'swiper/css';
+    import 'swiper/css/pagination';
+    import { Autoplay, Pagination } from 'swiper/modules';
+    document.addEventListener('astro:page-load', () => {
+      new Swiper('.service-carousel .swiper', {
+        modules: [Pagination, Autoplay],
+        // autoplay: false,
+        autoplay: {
+          delay: 4000,
+          disableOnInteraction: false,
+        },
+        pagination: {
+          type: 'bullets',
+          el: '.service-carousel .pagination',
+          clickable: true,
+        },
+      });
+    });
+  </script>
+</div>

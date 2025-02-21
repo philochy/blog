@@ -1,0 +1,60 @@
+---
+import { Icon } from 'astro-icon/components';
+import { twMerge } from 'tailwind-merge';
+interface Props {
+  /**
+   * 按钮样式类型：可以是 'solid' 或 'outline'。
+   */
+  type: 'solid' | 'outline';
+
+  /**
+   * 输入字段的占位符文本，默认为空。
+   */
+  placeholder?: string;
+
+  /**
+   * 表单元素的额外 CSS 类，用于进一步样式化。
+   */
+  className?: string;
+
+  /**
+   * 表单内输入元素的特定 CSS 类。
+   */
+  inputClassName?: string;
+  actions?: string;
+}
+
+const {
+  type,
+  className = '',
+  placeholder = 'Search Keywords',
+  inputClassName,
+  actions,
+} = Astro.props;
+---
+
+<form
+  class={twMerge('relative flex flex-1 search-component', className, type)}
+  data-form-submit
+  data-type={actions || 'search'}
+  method="post"
+>
+  <input
+    type="text"
+    class={twMerge('form-input h-[5rem] md:h-full', inputClassName)}
+    name="keywords"
+    {placeholder}
+    required
+  />
+  <button
+    type="submit"
+    class="absolute right-0 flex h-full w-[7.375rem] items-center justify-center md:w-[6rem]"
+  >
+    <slot>
+      <Icon
+        name="tabler:search"
+        class:list={'text-white w-[2.1875rem] h-[2.1875rem] md:w-[2.75rem] md:h-[2.75rem]'}
+      />
+    </slot>
+  </button>
+</form>

@@ -1,0 +1,125 @@
+---
+
+---
+
+<script>
+  /* eslint-disable prettier/prettier */
+
+  import { ModalKeys, PopupStatus } from '@/types/enum';
+  import { type ModalStore } from '@/types/globals';
+  import { getPopupStatus, attachEvent } from '@/utils';
+
+  const initScript = () => {
+    if (window.basic_script) {
+      return;
+    }
+
+    const baseSize = 16;
+    const maxScreenSize = 1920;
+    const minScreenSize = 750;
+
+    let resizeRequestFrame: number | null = null;
+    const setRootFontSize = () => {
+      const screenWidth = window.innerWidth;
+      const scale =
+        screenWidth <= minScreenSize
+          ? screenWidth / minScreenSize
+          : screenWidth / maxScreenSize;
+      document.documentElement.style.fontSize = `${baseSize * Math.min(scale, 1)}px`;
+    };
+
+    const handleResize = () => {
+      if (resizeRequestFrame) return;
+      resizeRequestFrame = window.requestAnimationFrame(() => {
+        setRootFontSize();
+        resizeRequestFrame = null;
+      });
+    };
+
+    window.basic_script = true;
+    const showModalAfterDelay = (delay = 10000) => {
+      const status = getPopupStatus();
+
+      if (status === PopupStatus.SHOWN) return;
+      setTimeout(() => {
+        const isClose = sessionStorage.getItem(ModalKeys.PROMPT) === 'close';
+        const modal = window.Alpine.store('modal') as ModalStore;
+        if (!isClose && modal.open) {
+          modal.open(ModalKeys.PROMPT);
+        }
+      }, delay);
+    };
+
+    const onLoad = function () {
+      const modal = window.Alpine.store('modal') as ModalStore;
+      attachEvent('[data-toggle-search]', 'click', () => {
+        modal.open(ModalKeys.MOBIlE_SEARCH);
+      });
+      attachEvent('[data-social-share]', 'click', (_, elem) => {
+        const network = elem.getAttribute('data-social-share-tag');
+        const url = encodeURIComponent(elem.getAttribute('data-url') as string);
+        const text = encodeURIComponent(
+          elem.getAttribute('data-social-share-slug') as string
+        );
+
+        let href;
+        switch (network) {
+          case 'facebook':
+            href = `https://www.facebook.com/sharer.php?u=${url}`;
+            break;
+          case 'twitter':
+            href = `https://twitter.com/intent/tweet?url=${url}&text=${text}`;
+            break;
+          case 'linkedin':
+            href = `https://www.linkedin.com/shareArticle?mini=true&url=${url}&title=${text}`;
+            break;
+          case 'whatsapp':
+            href = `https://wa.me/?text=${text}%20${url}`;
+            break;
+          case 'mail':
+            href = `mailto:?subject=%22${text}%22&body=${text}%20${url}`;
+            break;
+          case 'pinterest':
+            href = `https://pinterest.com/pin/create/button/?url=${url}&description=${text}`;
+            break;
+          case 'instagram':
+            href = 'https://www.instagram.com/chgbearing/';
+            break;
+          case 'youtube':
+            href = 'https://www.youtube.com/channel/UCo3la3W_JyZu7C2P-F_DkDA';
+            break;
+          default:
+            return;
+        }
+
+        const newlink = document.createElement('a');
+        newlink.target = '_blank';
+        newlink.href = href;
+        newlink.click();
+      });
+
+      attachEvent('.open-modal', 'click', () => {
+        const modal = window.Alpine.store('modal') as ModalStore;
+        if (modal.open) {
+          modal.open(ModalKeys.CONFIRM);
+        }
+      });
+      attachEvent('#tab-select', 'change', (e) => {
+        const value = (e.target as HTMLSelectElement).value;
+        window.location.href = `${location.origin}${value}`;
+      });
+
+      // submit();
+      showModalAfterDelay();
+      setRootFontSize();
+    };
+
+    window.onload = onLoad;
+    window.addEventListener('resize', handleResize);
+    document.addEventListener('astro:after-swap', () => {
+      onLoad();
+      window.addEventListener('resize', handleResize);
+    });
+  };
+  initScript();
+</script>

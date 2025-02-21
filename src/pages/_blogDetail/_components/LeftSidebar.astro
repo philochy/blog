@@ -1,0 +1,36 @@
+---
+import { Icon } from 'astro-icon/components';
+
+import Link from '@/components/base/Link.astro';
+
+import { type HeadingData } from '@/types/globals';
+interface Props {
+  headings: HeadingData[];
+}
+const { headings } = Astro.props;
+---
+
+<div class="relative hidden flex-1 md:block">
+  <ul
+    class="sticky top-0 -mt-[14.375rem] flex h-[100vh] flex-col gap-[2.1875rem] overflow-y-auto overflow-x-hidden pt-[14.375rem]"
+    style="scrollbar-width:none;"
+  >
+    <li class="flex items-center gap-[0.3125rem] text-primary-dark-blue">
+      <Icon name="tabler:chevrons-up-right" /><span
+        class="border-b border-primary-dark-blue">Navigation</span
+      >
+    </li>
+    {
+      headings.map((item) => (
+        <li class="max-w-[10rem]">
+          <Link
+            href={`#${item.id}`}
+            class="... nav-link inline-block max-w-full truncate text-gray-800 opacity-70 hover:text-primary-dark-blue"
+          >
+            {item.text}
+          </Link>
+        </li>
+      ))
+    }
+  </ul>
+</div>

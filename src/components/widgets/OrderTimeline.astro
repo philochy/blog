@@ -1,0 +1,18 @@
+---
+import { Icon } from 'astro-icon/components';
+
+import { workflow } from '@/config/theme';
+---
+
+<div class="hidden bg-gray-light md:block">
+  <ul class="section mt-[2.5rem] flex flex-nowrap justify-between py-[1.25rem]">
+    {
+      workflow.map((item) => (
+        <li class="flex w-fit cursor-pointer items-center gap-3 text-gray-dark hover:text-primary-dark-blue">
+          <Icon name={item.icon} class="h-[1.5625rem] w-[1.5625rem] " />
+          <span class="font-serif text-[1.125rem]">{item.text}</span>
+        </li>
+      ))
+    }
+  </ul>
+</div>

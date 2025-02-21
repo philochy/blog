@@ -1,0 +1,96 @@
+---
+import type { ImageMetadata } from 'astro';
+
+import Image from '@/components/base/Image.astro';
+import Link from '@/components/base/Link.astro';
+import Tag from '@/components/ui/Tag.astro';
+import AuthorBadge from '@/components/widgets/AuthorBadge.astro';
+import PV from '@/components/widgets/PV.astro';
+import ShareList from '@/components/widgets/ShareList.astro';
+import Time from '@/components/widgets/Time.astro';
+
+import newsImage from '@/assets/image/news-image.png';
+import { type Tag as TagType, type Time as TimeType } from '@/types/api';
+
+interface Props {
+  title: string;
+  desc: string;
+  imageUrl: string | ImageMetadata;
+  tag: TagType[];
+  time: TimeType;
+  pv: number | string;
+  path: string;
+  name: string;
+  avatar: string;
+}
+const {
+  title,
+  desc,
+  imageUrl,
+  tag: nextTag,
+  time,
+  pv,
+  path,
+  name,
+  avatar,
+} = Astro.props;
+---
+
+<Link href={path} class="block md:w-auto">
+  <div
+    class="group grid bg-gray-light md:grid-cols-[34.0625rem_1fr] md:gap-[2.5rem]"
+  >
+    <Image
+      src={imageUrl || newsImage}
+      alt={title}
+      class="block !h-[26.0625rem] !max-h-none !w-[43.125rem] !max-w-none !object-cover md:!h-[20.625rem] md:!w-[34.0625rem]"
+    />
+    <div
+      class="flex w-full flex-col justify-between gap-[1.25rem] p-[1.875rem] md:w-auto md:gap-0 md:p-[2.5rem]"
+    >
+      <div class="flex justify-between md:h-fit">
+        <div class="flex gap-[0.125rem]">
+          {
+            nextTag.map((tag) => (
+              <Tag
+                textColor={tag.color || 'text-primary-dark-blue'}
+                bgColor={tag.background || 'opacity-0'}
+              >
+                <div class="line-clamp-1">{tag.ename}</div>
+              </Tag>
+            ))
+          }
+        </div>
+        <ShareList
+          {title}
+          slug={desc}
+          description={desc}
+          url={Astro.site + path}
+          type="1"
+        />
+      </div>
+      <div class="md:mt-[1.25rem]">
+        <h3
+          class="... mb-[0.5rem] line-clamp-2 font-heading text-card-title leading-card-title text-dark group-hover:text-primary-dark-blue"
+          style="overflow-wrap: anywhere;"
+        >
+          {title}
+        </h3>
+        <aside
+          class="line-clamp-4 font-serif text-card-desc leading-card-desc text-gray-dark md:line-clamp-3"
+        >
+          {desc}
+        </aside>
+      </div>
+      <div
+        class="flex items-center justify-between text-[#AAAAAA] group-hover:text-primary-dark-blue"
+      >
+        <AuthorBadge {name} {avatar} />
+        <div class="flex items-center gap-2">
+          <Time {time} />
+          <PV {pv} />
+        </div>
+      </div>
+    </div>
+  </div>
+</Link>

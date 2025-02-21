@@ -1,0 +1,59 @@
+---
+import type { ImageMetadata } from 'astro';
+
+import { twMerge } from 'tailwind-merge';
+
+import { InlineQuoteForm, QuoteRequestModal, CompanyProfile, HotBlog } from '.';
+
+import dialogImageDefault from '@/assets/image/dialog-image.png';
+import { type ListItem } from '@/types/api';
+
+interface Props {
+  formStyleId: 'compact' | 'default';
+  bannerStyle: string;
+  data: ListItem[];
+  className?: string;
+  image?: string | ImageMetadata;
+  formBtnText: string;
+  leadingWors: string;
+  keyword: string;
+  content: string;
+  company: {
+    title: string;
+    subTitle: string;
+    imageUrl: string;
+  };
+}
+const {
+  leadingWors,
+  keyword,
+  bannerStyle,
+  formStyleId,
+  image = dialogImageDefault,
+  data,
+  formBtnText,
+  content,
+  company,
+} = Astro.props;
+---
+
+<div
+  class={twMerge(
+    'space-y-[3.75rem] md:space-y-[2.5rem]',
+    bannerStyle === 'full-width' ? 'md:-mt-[7.1875rem]' : ''
+  )}
+>
+  <slot />
+  {
+    formStyleId === 'compact' && (
+      <InlineQuoteForm title={keyword} desc={leadingWors} {formBtnText} />
+    )
+  }
+  {formStyleId === 'default' && <QuoteRequestModal {formBtnText} {content} />}
+  <CompanyProfile
+    name={company.title}
+    desc={company.subTitle}
+    image={company.imageUrl || image}
+  />
+  <HotBlog {data} />
+</div>

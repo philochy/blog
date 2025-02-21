@@ -1,0 +1,12 @@
+@use "sass:meta";
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer components {
+  @include meta.load-css('components');
+}
+@import url('./editor/css/iconfont.css');
+@import url('./editor/css/modular.css');
+@import url('./editor/css/templates-build.css');
+@import url('./animation.scss');

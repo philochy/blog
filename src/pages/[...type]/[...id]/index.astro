@@ -1,0 +1,57 @@
+---
+import type { GetStaticPaths } from 'astro';
+
+import { getBLogList } from '@/utils/blog';
+import { findAllTags } from '@/utils/tags';
+
+import BlogDetail from '../../_blogDetail/index.astro';
+import ListView from '../../index.astro';
+
+import type { ListItem } from '@/types/api';
+
+import { getThemeConfig } from '@/servers';
+import { themeConfig } from '@/utils';
+
+export const getStaticPaths = (async () => {
+  const blog = await getBLogList();
+  const tags = await findAllTags();
+  const { list, form, banner, modal } = await getThemeConfig();
+  const { listPageSize } = themeConfig({
+    list,
+    form,
+    banner,
+    modal,
+  });
+  const result = blog.list.map((item) => ({
+    params: { type: item.path.split('/')[1], id: item.path.split('/')[2] },
+    props: { type: 'detail', data: item },
+  }));
+  const tagsPromise = tags.map(async (item) => {
+    const ename = item.ename === 'All' ? null : item.ename;
+    const blogList = await getBLogList(ename);
+    const size = Math.ceil(blogList.list.length / listPageSize);
+    const paramsArr = [];
+    for (let i = 1; i <= size; i++) {
+      const params = {
+        params: {
+          id: `page-${i}`,
+          type: item.path.split('/')[1],
+        },
+        props: {
+          type: 'list',
+          data: ename || '',
+        },
+      };
+      paramsArr.push(params);
+    }
+    return paramsArr;
+  });
+  const tagsList = await Promise.all(tagsPromise);
+
+  return [...result, ...tagsList.flat()];
+}) satisfies GetStaticPaths;
+const { type, data } = Astro.props;
+---
+
+{type === 'list' && <ListView ename={data} />}
+{type === 'detail' && <BlogDetail data={data as ListItem} />}

@@ -1,0 +1,59 @@
+.form-input {
+  @apply w-full p-2 border-[0.0625rem] border-gray-300;
+  @apply focus:outline-none focus:ring-1 focus:ring-primary-dark-blue;
+}
+
+.form-btn {
+  @apply w-full p-3 text-black bg-white border-2 border-blue-600;
+  @apply relative  isolation-auto z-[1];
+  @apply before:absolute before:w-full before:transition-all before:duration-700 ;
+  @apply before:hover:w-full before:-right-full before:hover:right-0 before:rounded-full;
+  @apply before:bg-blue-600 before:-z-10  before:aspect-square before:hover:scale-150;
+  @apply overflow-hidden before:hover:duration-700;
+}
+
+.pagination-link {
+  @apply inline-flex items-center border-t-2 border-transparent gap-2 pr-1 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700;
+}
+
+.page-number {
+  @apply inline-flex items-center border-t-2 border-transparent px-4 pt-4 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700;
+}
+.active-page {
+  @apply page-number text-primary-bluel;
+}
+.search-component.solid {
+  input {
+    @apply bg-gray-light;
+  }
+  button {
+    @apply border-[0.0625rem] border-solid border-primary-dark-blue bg-primary-dark-blue;
+  }
+}
+.search-component.outline {
+  outline: none;
+  input {
+    @apply bg-text-white border-gray-800;
+    @apply focus:border-transparent;
+  }
+}
+
+.footer-form-input {
+  @apply bg-primary-blue border-none py-3;
+  @apply focus:outline-none focus:ring-0 focus:ring-transparent;
+}
+
+.home-container,
+.section {
+  max-width: 1920px;
+  padding: 0px 5.9375rem;
+  margin: 0 auto;
+}
+@media (max-width: 750px) {
+  .home-container,
+  .section {
+    max-width: 750px;
+    padding: 0px 1.8125rem;
+    margin: 0 auto;
+  }
+}

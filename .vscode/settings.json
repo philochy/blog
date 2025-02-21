@@ -1,0 +1,13 @@
+{
+  "editor.tabCompletion": "on",
+  "editor.formatOnSave": false,
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "[astro]": {
+    "editor.defaultFormatter": "astro-build.astro-vscode"
+  },
+  "astro.content-intellisense": true,
+
+  "editor.codeActionsOnSave": {
+    "source.fixAll": "explicit"
+  }
+}

@@ -1,0 +1,112 @@
+---
+import { Icon } from 'astro-icon/components';
+import { twMerge } from 'tailwind-merge';
+
+import Link from '../base/Link.astro';
+import Drawer from '../ui/Drawer.astro';
+import Modal from '../ui/Modal.astro';
+
+import HeaderSearch from './HeaderSearch.astro';
+import Logo from './Logo.astro';
+import MobileMenu from './MobileMenu.astro';
+
+import logoImage from '@/assets/image/logo.png';
+import { headerData } from '@/config/theme';
+import { ModalKeys } from '@/types/enum';
+const searchModalName = ModalKeys.MOBIlE_SEARCH;
+---
+
+<header
+  class="sticky left-0 top-0 z-10 mx-auto w-full flex-none bg-white shadow transition-[opacity] ease-in-out"
+>
+  <nav class="section flex justify-between">
+    <div
+      class="flex flex-1 flex-row items-center justify-between py-2 md:justify-start md:gap-[6.25rem] md:py-0"
+    >
+      <!-- logo -->
+      <Logo image={logoImage} className="order-2" />
+      <!-- Mobile menu button -->
+      <div class="block md:hidden">
+        <Drawer>
+          <div slot="open">
+            <Icon name="tabler:menu-2" class="h-8 w-8 cursor-pointer" />
+          </div>
+          <MobileMenu className="mt-10" />
+        </Drawer>
+      </div>
+      <!-- pc menu -->
+      <ul
+        class="order-2 hidden h-full flex-1 justify-center gap-[3.125rem] md:flex"
+      >
+        {
+          headerData.links.map((item) => (
+            <li class="group relative">
+              <Link
+                class={twMerge(
+                  'text-text-dark flex h-full items-center justify-center border-b-2 border-transparent px-1 pt-1 font-medium text-[var(--font-size-base)] hover:border-primary-dark-blue hover:text-primary-dark-blue'
+                )}
+                href={item.href}
+              >
+                {item.text}
+                {item?.children && item.children.length > 0 && (
+                  <Icon
+                    name="tabler:chevron-down"
+                    class="transition duration-200 group-hover:-rotate-180"
+                  />
+                )}
+              </Link>
+              {item?.children && item.children.length > 0 && (
+                <ul class="absolute left-0 top-full hidden min-w-[240%]  space-y-2 bg-white group-hover:block">
+                  {item.children.map((sItem) => (
+                    <li class="group/1 relative px-2">
+                      <Link
+                        href={sItem.href}
+                        class="flex items-center justify-between text-nowrap p-2 text-[var(--font-size-base)]"
+                      >
+                        {sItem.text}
+                        {sItem?.children && sItem.children.length > 0 && (
+                          <Icon name="tabler:chevron-right" />
+                        )}
+                      </Link>
+                      {sItem?.children && sItem.children.length > 0 && (
+                        <ul class="absolute left-full top-0 hidden min-w-[100%] space-y-2 bg-white group-hover/1:block">
+                          {sItem.children.map((s) => (
+                            <li class="p-2">
+                              <Link href={s.href} class="text-nowrap p-2">
+                                {s.text}
+                              </Link>
+                            </li>
+                          ))}
+                        </ul>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+              )}
+            </li>
+          ))
+        }
+      </ul>
+      <!-- Mobile search btn -->
+      <Icon
+        name="tabler:search"
+        class:list={'text-dark h-8 w-8 order-3 md:hidden'}
+        data-toggle-search
+      />
+    </div>
+    <!--  search -->
+    <dir class="hidden md:block">
+      <HeaderSearch />
+    </dir>
+  </nav>
+</header>
+
+<Modal
+  modalName={searchModalName}
+  className="items-start p-0 md:hidden"
+  bodyClassName="h-[12.5rem]"
+>
+  <div class="mx-auto ml-[2.5rem] mt-[5rem]">
+    <HeaderSearch />
+  </div>
+</Modal>

@@ -1,0 +1,14 @@
+---
+import type { theme } from '@/config/theme';
+import type { ContactShare } from '@/types/api';
+
+type AvailableStyles = (typeof theme)['side']['availableStyles'];
+interface Props {
+  bannerStyle: AvailableStyles[number]['styleId'];
+  bannerConfig: Record<number, ContactShare[]>;
+}
+
+const { bannerStyle: styleId, bannerConfig } = Astro.props;
+---
+
+<div class="fixed right-1 top-1/2 -translate-y-1/2">11111</div>

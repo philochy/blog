@@ -1,0 +1,125 @@
+---
+import Section from '@/components/base/Section.astro';
+import Pagination from '@/components/ui/Pagination.astro';
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+import { getBLogList } from '@/utils/blog';
+
+import {
+  BannerView,
+  DetailCard,
+  FeatureCard,
+  SiderSection,
+  StandardCard,
+} from './_components';
+
+import type { ListItem } from '@/types/api';
+
+import dialogImageDefault from '@/assets/image/dialog-image.png';
+import { getBanner, getThemeConfig, getFormConfig } from '@/servers';
+import { paginateList, themeConfig } from '@/utils';
+
+const {
+  props: { ename = null },
+  url: { pathname },
+} = Astro;
+const { list, form, banner, modal } = await getThemeConfig();
+const { list: dataList, hotList } = await getBLogList(ename);
+const { banner: bannerConfig } = await getBanner();
+const {
+  form: { btnText: formBtnText, leadingWors, keyword, content },
+  company,
+} = await getFormConfig();
+const { bannerStyle, listStyle, listPageSize, formStyleId } = themeConfig({
+  list,
+  form,
+  banner,
+  modal,
+});
+const { data: listData, ...rest } = paginateList<ListItem>(
+  pathname,
+  listPageSize,
+  dataList
+);
+---
+
+<BaseLayout>
+  <div class="home-container px-0">
+    <BannerView {bannerStyle} {bannerConfig} />
+  </div>
+
+  <Section>
+    {
+      listStyle === 'one-per-row' && (
+        <ul slot="list" class="flex flex-col gap-[1.25rem]">
+          {listData.slice(0, listPageSize).map((item) => (
+            <DetailCard
+              title={item.name_ch}
+              desc={item.typeDes}
+              tag={item.tag}
+              time={item.time}
+              pv={item.pv}
+              imageUrl={item.imageUrl}
+              path={item.path}
+              name={item.name}
+              avatar={item.avatar}
+            />
+          ))}
+        </ul>
+      )
+    }
+    {
+      listStyle === 'two-per-row' && (
+        <ul slot="list" class="grid grid-cols-1 gap-[1.25rem] md:grid-cols-2">
+          {listData.slice(0, listPageSize).map((item) => (
+            <FeatureCard
+              title={item.name_ch}
+              desc={item.typeDes}
+              tag={item.tag}
+              time={item.time}
+              avatar={item.avatar}
+              pv={item.pv}
+              imageUrl={item.imageUrl}
+              path={item.path}
+              name={item.name}
+            />
+          ))}
+        </ul>
+      )
+    }
+    {
+      listStyle === 'three-per-row' && (
+        <ul slot="list" class="grid grid-cols-1 gap-[1.25rem] md:grid-cols-3">
+          {listData.slice(0, listPageSize).map((item) => (
+            <StandardCard
+              title={item.name_ch}
+              avatar={item.avatar}
+              desc={item.typeDes}
+              tag={item.tag}
+              time={item.time}
+              pv={item.pv}
+              imageUrl={item.imageUrl}
+              path={item.path}
+              name={item.name}
+            />
+          ))}
+        </ul>
+      )
+    }
+    <Fragment slot="pagination"><Pagination {...rest} /></Fragment>
+    <Fragment slot="sider"
+      ><SiderSection
+        {bannerStyle}
+        {formBtnText}
+        {leadingWors}
+        {keyword}
+        {content}
+        image={dialogImageDefault}
+        {formStyleId}
+        data={hotList}
+        {company}
+      /></Fragment
+    >
+  </Section>
+</BaseLayout>

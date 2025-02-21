@@ -1,0 +1,26 @@
+---
+import Link from '../base/Link.astro';
+
+import Language from './Language.astro';
+interface Props {
+  email: string;
+}
+const { email } = Astro.props;
+---
+
+<div class="flex items-center bg-primary-dark-blue">
+  <section
+    class="section relative flex h-[2.5rem] w-full justify-between text-white"
+  >
+    <div class="flex items-center justify-center">
+      <Link
+        href={'mailto:' + email}
+        class="text-[1.125rem] md:text-[1rem]"
+        rel="noopener noreferrer notranslate">{email}</Link
+      >
+    </div>
+    <div>
+      <Language />
+    </div>
+  </section>
+</div>

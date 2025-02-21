@@ -1,0 +1,29 @@
+---
+import type { ImageMetadata } from 'astro';
+
+import Image from '@/components/base/Image.astro';
+
+interface Props {
+  name: string;
+  desc: string;
+  image: string | ImageMetadata;
+}
+const { name, desc, image } = Astro.props;
+---
+
+<div class="bg-gray-light">
+  <Image
+    src={image}
+    alt={name}
+    loading="lazy"
+    class="h-[22.75rem] !max-h-none !w-full !max-w-none object-cover md:h-[13.75rem] md:w-[26.0625rem]"
+  />
+  <div class="space-y-[0.625rem] p-[1.875rem]">
+    <p class="text-card-title leading-card-title text-primary-dark-blue">
+      {name}
+    </p>
+    <aside class="text-card-desc leading-card-desc text-gray-dark">
+      {desc}
+    </aside>
+  </div>
+</div>

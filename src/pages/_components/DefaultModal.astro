@@ -1,0 +1,34 @@
+---
+import { twMerge } from 'tailwind-merge';
+
+import Form from '@/components/base/Form.astro';
+import Modal from '@/components/ui/Modal.astro';
+
+import { formConfig as config } from '@/config/theme';
+import { ModalKeys } from '@/types/enum';
+interface Props {
+  title: string;
+  className?: string;
+}
+const { title, className } = Astro.props;
+const modalName = ModalKeys.PROMPT;
+---
+
+<Modal
+  {modalName}
+  className={twMerge('md:justify-end', className)}
+  bodyClassName="w-fit"
+>
+  <div class="w-[26.25rem] space-y-1 p-[2.5rem]">
+    <p class="font-sans text-lg text-gray-dark lg:text-base">{title}</p>
+    <form
+      class="flex flex-1 flex-col gap-large"
+      data-form-submit
+      method="post"
+      data-type="download"
+    >
+      <Form {config} />
+      <button type="submit" class="form-btn">Get A Free Quote</button>
+    </form>
+  </div>
+</Modal>

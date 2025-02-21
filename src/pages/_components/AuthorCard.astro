@@ -1,0 +1,31 @@
+---
+import { twMerge } from 'tailwind-merge';
+
+import Image from '@/components/base/Image.astro';
+
+interface Props {
+  name: string;
+  desc: string;
+  imageUrl: string;
+  className?: string;
+}
+const { imageUrl, name, desc, className } = Astro.props;
+---
+
+<div
+  class={twMerge(
+    'flex justify-between gap-[1.875rem] bg-gray-light p-[1.875rem]',
+    className
+  )}
+>
+  <div
+    class="!h-[6.875rem] !w-[6.875rem] overflow-hidden rounded-[50%] md:!h-[3.4375rem] md:!w-[3.4375rem]"
+  >
+    <Image src={imageUrl} alt={name} class="h-full w-full object-cover" />
+  </div>
+
+  <aside class="flex-1">
+    <p class="line-clamp-1 text-dark">{name}</p>
+    <p class="line-clamp-4 text-[#999]">{desc}</p>
+  </aside>
+</div>

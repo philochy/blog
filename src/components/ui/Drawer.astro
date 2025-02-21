@@ -1,0 +1,43 @@
+---
+import { Icon } from 'astro-icon/components';
+
+import { uuid } from '@/utils';
+
+interface Props {
+  /**
+   * 是否允许点击遮罩层关闭抽屉，默认为 true，允许点击遮罩层关闭。
+   */
+  maskClosable?: boolean;
+}
+
+const { maskClosable = true } = Astro.props;
+const instanceId = uuid();
+---
+
+<div class="drawer drawer-end">
+  <input id={instanceId} type="checkbox" class="drawer-toggle" />
+  <div class="drawer-content">
+    <label for={instanceId}> <slot name="open">open btn</slot></label>
+  </div>
+  <div class="z-99 drawer-side">
+    {
+      maskClosable && (
+        <label
+          for={instanceId}
+          aria-label="close sidebar"
+          class="drawer-overlay"
+        />
+      )
+    }
+    <div class="min-h-full w-80 bg-white p-4 text-base-content">
+      <label for={instanceId} aria-label="close sidebar" class="drawer-overlay">
+        <Icon
+          name="tabler:x"
+          aria-label="button"
+          class:list="absolute right-5 top-5 md:h-4 md:w-4 h-8 w-8 cursor-pointer text-block"
+        /></label
+      >
+      <slot />
+    </div>
+  </div>
+</div>

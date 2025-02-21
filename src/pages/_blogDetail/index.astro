@@ -1,0 +1,215 @@
+---
+import Link from '@/components/base/Link.astro';
+import Section from '@/components/base/Section.astro';
+import Tag from '@/components/ui/Tag.astro';
+import PV from '@/components/widgets/PV.astro';
+import ShareList from '@/components/widgets/ShareList.astro';
+import Time from '@/components/widgets/Time.astro';
+
+import BaseLayout from '@/layouts/BaseLayout.astro';
+
+import { getSubling, getBLogList } from '@/utils/blog';
+import { addAnchorsToHeadings } from '@/utils/htmlProcessor';
+
+import { AuthorCard } from '../_components';
+import { SiderSection } from '../_components';
+
+import { Breadcrumb, LeftSidebar } from './_components';
+
+import type { ListItem } from '@/types/api';
+
+import dialogImageDefault from '@/assets/image/dialog-image.png';
+import { getFormConfig, getThemeConfig } from '@/servers';
+import { themeConfig, getConfig, replaceTDK } from '@/utils';
+
+interface Props {
+  data: ListItem;
+}
+const {
+  props: { data },
+} = Astro;
+const SITE = getConfig();
+const config = await getThemeConfig();
+const {
+  form: { btnText: formBtnText, leadingWors, keyword, content },
+  company,
+} = await getFormConfig();
+const { hotList } = await getBLogList();
+const { next, prev } = await getSubling(data.ID);
+const { bannerStyle, formStyleId } = themeConfig(config);
+const { html, headings } = addAnchorsToHeadings(data.content);
+const tdk = {
+  title: replaceTDK(data.title || SITE.title, data.name_ch, 'knowledgedetail'),
+  keywords: replaceTDK(
+    data.keywords || SITE.keywords,
+    data.name_ch,
+    'knowledgedetail'
+  ),
+  description: replaceTDK(
+    data.description || SITE.description,
+    data.name_ch,
+    'knowledgedetail'
+  ),
+};
+---
+
+<BaseLayout
+  pubDate={data.publishDate}
+  lastModDate={data.lastModDate}
+  {...tdk}
+  ogImage={new URL(data.imageUrl, SITE.website).toString()}
+>
+  <Breadcrumb>
+    <Fragment slot="post"><a href="/">Blog</a></Fragment>
+    {data.name_ch}
+  </Breadcrumb>
+  <Section mode="detail" className="mt-[1.875rem] md:mt-0">
+    <Fragment slot="detail">
+      <div class="flex justify-between gap-[6.875rem]">
+        <LeftSidebar {headings} />
+        <div class="w-full space-y-4 md:w-[64.375rem]">
+          <p
+            class="font-sans text-card-title font-semibold leading-card-title text-dark"
+          >
+            {data.name_ch}
+          </p>
+          <div class="flex justify-between">
+            <div class="flex gap-3">
+              <div class="flex gap-[0.125rem]">
+                {
+                  data.tag.map((tag) => (
+                    <Tag
+                      textColor={tag.color || 'text-primary-dark-blue'}
+                      bgColor={tag.background || 'opacity-0'}
+                    >
+                      <div class="line-clamp-1">{tag.ename}</div>
+                    </Tag>
+                  ))
+                }
+              </div>
+              <div class="flex items-center gap-2 text-primary-blue">
+                <Time time={data.time} />|
+                <PV pv={data.pv} />
+              </div>
+            </div>
+            <div class="hidden items-center gap-1 md:flex">
+              <div class="text-[#9999]">Share This Article To:</div>
+              <ShareList
+                title={data.name_ch}
+                slug={data.typeDes}
+                description={data.typeDes}
+                url={data.path}
+                className="flex gap-[0.625rem]"
+                type="1"
+              />
+            </div>
+          </div>
+          <div class="editor-content" set:html={html} />
+          <hr class="block md:hidden" />
+          <ShareList
+            title={data.name_ch}
+            slug={data.typeDes}
+            description={data.typeDes}
+            url={data.path}
+            className="mx-auto flex w-fit scale-[1.5] gap-[20px] md:hidden"
+            type="1"
+          />
+          <AuthorCard
+            name={data.name}
+            desc={data.authorDesc}
+            imageUrl={data.avatar}
+            className="flex md:hidden"
+          />
+          <div class="flex flex-col justify-between gap-2 md:flex-row">
+            <Link
+              href={prev.path || '# '}
+              class="group bg-gray-light px-[2rem] py-[1rem] hover:bg-primary-blue"
+            >
+              <div class="line-clamp-1 flex gap-1">
+                <span
+                  class="text-nowrap text-primary-blue group-hover:text-white"
+                >
+                  Previous Article:
+                </span><span
+                  class="line-clamp-1 flex-1 text-[#7b7b7b] group-hover:text-white"
+                  >{prev.name_ch}</span
+                >
+              </div>
+            </Link>
+            <Link
+              href={next.path || '# '}
+              class="group bg-gray-light px-[2rem] py-[1rem] hover:bg-primary-blue"
+            >
+              <div class="line-clamp-1 flex gap-1">
+                <span
+                  class="text-nowrap text-primary-blue group-hover:text-white"
+                >
+                  Next Article:
+                </span><span
+                  class="line-clamp-1 flex-1 text-[#7b7b7b] group-hover:text-white"
+                  >{next.name_ch}</span
+                >
+              </div>
+            </Link>
+          </div>
+        </div>
+      </div>
+    </Fragment>
+    <Fragment slot="sider"
+      ><SiderSection
+        {bannerStyle}
+        {formStyleId}
+        data={hotList}
+        {leadingWors}
+        {formBtnText}
+        {keyword}
+        {content}
+        image={dialogImageDefault}
+        data={hotList}
+        {company}
+      >
+        <AuthorCard
+          name={data.name}
+          desc={data.authorDesc}
+          imageUrl={data.avatar}
+          className="hidden md:flex"
+        />
+      </SiderSection>
+    </Fragment>
+    <style lang="scss">
+      html,
+      body {
+        position: relative;
+        height: 100%;
+        scroll-behavior: smooth;
+      }
+      .editor-content {
+        line-height: 1.8;
+        font-size: 16px;
+        p {
+          margin: 1em 0;
+        }
+        img {
+          max-width: 100%;
+          height: auto;
+          border-radius: 4px;
+          margin: 1em 0;
+        }
+        table {
+          border-collapse: collapse;
+          width: 100%;
+          margin: 1em 0;
+        }
+        th,
+        td {
+          border: 1px solid #ddd;
+          padding: 8px;
+          text-align: left;
+        }
+        th {
+          font-weight: bold;
+        }
+      }
+    </style>
+  </Section>
+</BaseLayout>

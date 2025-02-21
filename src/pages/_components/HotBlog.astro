@@ -1,0 +1,54 @@
+---
+import Image from '@/components/base/Image.astro';
+import Link from '@/components/base/Link.astro';
+import Tag from '@/components/ui/Tag.astro';
+
+import type { ListItem } from '@/types/api';
+
+interface Props {
+  data: ListItem[];
+}
+const { data } = Astro.props;
+---
+
+<div class="space-y-[1.25rem]">
+  <p class="text-card-title leading-card-title text-primary-dark-blue">
+    Popular Blogs
+  </p>
+  <ul class="space-y-[1.25rem]">
+    {
+      data.slice(0, 3).map((item) => (
+        <li>
+          <Link href={item.path} class="relative block">
+            <Image
+              src={item.imageUrl}
+              alt={item.name_ch}
+              loading="lazy"
+              class={
+                '!h-[28.9375rem] !max-h-none w-full !max-w-none md:!h-[17.5rem] md:w-[26.0625rem]'
+              }
+            />
+            <div class="absolute bottom-0 left-0 w-full space-y-[0.625rem] px-[2.5rem] py-[1.25rem] md:px-[1.875rem]">
+              <div class="flex gap-[0.125rem]">
+                {item.tag.map((tag) => (
+                  <Tag
+                    textColor={tag.color || 'text-primary-dark-blue'}
+                    bgColor={tag.background || 'opacity-0'}
+                  >
+                    <div class="line-clamp-1">{tag.ename}</div>
+                  </Tag>
+                ))}
+              </div>
+              <p
+                class="... mb-[0.5rem] line-clamp-1 font-heading text-card-title leading-card-title text-white"
+                style="overflow-wrap: anywhere;"
+              >
+                {item.name_ch}
+              </p>
+            </div>
+          </Link>
+        </li>
+      ))
+    }
+  </ul>
+</div>

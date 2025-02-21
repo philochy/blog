@@ -1,0 +1,49 @@
+---
+import '@/assets/styles/main.scss';
+import Head from '@/components/base/Head.astro';
+import Footer from '@/components/widgets/Footer.astro';
+import TopUtility from '@/components/widgets/TopUtility.astro';
+
+import { getConfig } from '@/utils';
+
+const SITE = getConfig();
+
+export interface Props {
+  title?: string;
+  description?: string;
+  keywords?: string;
+  ogImage?: string;
+  pubDate?: string;
+  lastModDate?: string;
+}
+
+const { title, description, keywords, ogImage, pubDate, lastModDate } =
+  Astro.props;
+---
+
+<!doctype html>
+<html lang={SITE.lang}>
+  <Head {title} {description} {keywords} {ogImage} {pubDate} {lastModDate} />
+  <script defer>
+    /* eslint-disable prettier/prettier */
+    const adjustFontSize = () => {
+      const baseSize = 16;
+      const maxScreenSize = 1920;
+      const minScreenSize = 750;
+      const screenWidth = window.innerWidth;
+      const scale =
+        screenWidth <= minScreenSize
+          ? screenWidth / minScreenSize
+          : screenWidth / maxScreenSize;
+      document.documentElement.style.fontSize = `${baseSize * Math.min(scale, 1)}px`;
+    };
+
+    adjustFontSize();
+  </script>
+  <body>
+    <TopUtility email="tennyson@somyshare.com" />
+    <main><slot /></main>
+    <Footer />
+    <script src="../utils/formSubmit.ts"></script>
+  </body>
+</html>

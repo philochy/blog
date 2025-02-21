@@ -1,0 +1,63 @@
+---
+import { twMerge } from 'tailwind-merge';
+
+import Link from '../base/Link.astro';
+
+import { headerData } from '@/config/theme';
+
+interface Props {
+  className?: string;
+}
+
+const { className } = Astro.props;
+---
+
+<ul class={twMerge('menu w-full', className)}>
+  {
+    headerData.links.map((item) => (
+      <li>
+        {item.children && item.children.length > 0 ? (
+          <details>
+            <summary>
+              <Link href={item.href} class="my-2 text-card-tag font-medium">
+                {item.text}
+              </Link>
+            </summary>
+            <ul>
+              {item.children.map((subItem) => (
+                <li>
+                  {subItem.children && subItem.children.length > 0 ? (
+                    <details>
+                      <summary>
+                        <Link href={subItem.href} class="my-2 text-lg">
+                          {subItem.text}
+                        </Link>
+                      </summary>
+                      <ul>
+                        {subItem.children.map((subSubItem) => (
+                          <li>
+                            <Link href={subSubItem.href} class="my-2 text-lg">
+                              {subSubItem.text}
+                            </Link>
+                          </li>
+                        ))}
+                      </ul>
+                    </details>
+                  ) : (
+                    <Link href={subItem.href} class="my-2 text-lg">
+                      {subItem.text}
+                    </Link>
+                  )}
+                </li>
+              ))}
+            </ul>
+          </details>
+        ) : (
+          <Link href={item.href} class="my-2 text-card-tag font-medium">
+            {item.text}
+          </Link>
+        )}
+      </li>
+    ))
+  }
+</ul>

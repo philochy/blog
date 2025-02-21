@@ -1,0 +1,90 @@
+---
+import '@/assets/styles/main.scss';
+
+import Head from '@/components/base/Head.astro';
+import BasicScripts from '@/components/common/BasicScripts.astro';
+import WindowUtils from '@/components/common/WindowUtils.astro';
+import Footer from '@/components/widgets/Footer.astro';
+import Header from '@/components/widgets/Header.astro';
+import OrderTimeline from '@/components/widgets/OrderTimeline.astro';
+import TopUtility from '@/components/widgets/TopUtility.astro';
+import Wmkc from '@/components/widgets/Wmkc.astro';
+
+import { DefaultModal, PromptModal } from '@/pages/_components';
+
+import { getThemeConfig, getFormConfig } from '@/servers';
+import { getConfig, themeConfig } from '@/utils';
+const SITE = getConfig();
+const themeConfigResult = await getThemeConfig();
+const { modal } = await getFormConfig();
+const { modalStyleId } = themeConfig(themeConfigResult);
+
+export interface Props {
+  title?: string;
+  description?: string;
+  keywords?: string;
+  ogImage?: string;
+  pubDate?: string;
+  lastModDate?: string;
+}
+const {
+  title = themeConfigResult.title,
+  description = themeConfigResult.description,
+  keywords = themeConfigResult.keywords,
+  ogImage,
+  pubDate,
+  lastModDate,
+} = Astro.props;
+---
+
+<!doctype html>
+<html lang={SITE.lang}>
+  <Head {title} {description} {keywords} {ogImage} {pubDate} {lastModDate} />
+  <WindowUtils />
+  <script defer>
+    /* eslint-disable prettier/prettier */
+    const adjustFontSize = () => {
+      const baseSize = 16;
+      const maxScreenSize = 1920;
+      const minScreenSize = 750;
+      const screenWidth = window.innerWidth;
+      const scale =
+        screenWidth <= minScreenSize
+          ? screenWidth / minScreenSize
+          : screenWidth / maxScreenSize;
+      document.documentElement.style.fontSize = `${baseSize * Math.min(scale, 1)}px`;
+    };
+
+    adjustFontSize();
+  </script>
+  <body>
+    <TopUtility email="tennyson@somyshare.com" />
+
+    <Header />
+    <main><slot /></main>
+    <OrderTimeline />
+    <Footer />
+    <Wmkc />
+    {
+      modalStyleId === 'compact' && (
+        <PromptModal
+          title={modal.title}
+          image={modal.imageUrl}
+          btnText={modal.btnText}
+        />
+      )
+    }
+    {
+      modalStyleId === 'default' && (
+        <DefaultModal
+          title={modal.title}
+          className="mt-[45vh] min-h-0 items-start"
+        />
+      )
+    }
+
+    <BasicScripts />
+    <script src="../utils/formSubmit.ts"></script>
+    <script src="../utils/tracker.ts"></script>
+  </body>
+</html>

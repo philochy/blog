@@ -1,0 +1,113 @@
+---
+import { Icon } from 'astro-icon/components';
+import { twMerge } from 'tailwind-merge';
+
+import Image from '@/components/base/Image.astro';
+
+import facebook from '@/assets/icon/facebook.png';
+import linkedin from '@/assets/icon/linkedin.png';
+import pinterest from '@/assets/icon/Pinterest.png';
+import twitter from '@/assets/icon/twitter.png';
+
+interface Props {
+  title: string;
+  description: string;
+  slug: string;
+  className?: string;
+  url?: string;
+  type: '1' | '2' | '3';
+}
+
+const { title, description, slug, className = '', type = 1 } = Astro.props;
+const base_url = new URL(Astro.url.pathname, Astro.site);
+
+const shareList = [
+  {
+    icon: 'tabler:brand-twitter-filled',
+    image: twitter,
+    className: '',
+    tag: 'twitter',
+    link: `https://twitter.com/intent/tweet/?text=${title}&amp;url=${base_url}/${slug}`,
+  },
+  {
+    icon: 'tabler:brand-facebook-filled',
+    image: facebook,
+    className: '',
+    tag: 'facebook',
+    link: `https://facebook.com/sharer/sharer.php?u=${base_url}/${slug}`,
+  },
+  {
+    icon: 'tabler:brand-linkedin',
+    image: linkedin,
+    className: '',
+    tag: 'linkedin',
+    link: `https://www.linkedin.com/shareArticle?mini=true&url=${base_url}/${slug}&title=${title}&summary=${description}&source=${base_url}`,
+  },
+  {
+    icon: 'tabler:brand-pinterest',
+    image: pinterest,
+    className: '',
+    tag: 'pinterest',
+    link: `https://pinterest.com/pin/create/button/?url=${base_url}/${slug}&media=&description=${description}`,
+  },
+];
+---
+
+<ul class={twMerge('flex items-center gap-[0.3125rem]', className)}>
+  {
+    type === '2' && (
+      <li class="inline-block">
+        <button>
+          <slot name="close-btn-end" />
+        </button>
+      </li>
+    )
+  }
+  {
+    shareList.map((item) => (
+      <li class="inline-block">
+        <button
+          data-social-share
+          aria-label={`${item.tag} share button`}
+          data-social-share-slug={slug}
+          data-social-share-tag={item.tag}
+          data-url={base_url}
+        >
+          {type === '1' && (
+            <Image
+              src={item.image}
+              alt={`${item.tag} share`}
+              class="h-[2.5rem] w-[2.5rem] md:h-[1.5rem] md:w-[1.5rem]"
+            />
+          )}
+          {type !== '1' && (
+            <div
+              class={twMerge(
+                'flex items-center justify-center rounded-full  p-[0.1875rem]',
+                type === '2' ? 'bg-white' : ''
+              )}
+            >
+              <Icon
+                name={item.icon}
+                class={twMerge(
+                  'h-[1.875rem] w-[1.875rem] md:h-[1.25rem] md:w-[1.25rem]',
+                  type === '2' ? 'text-[#47514f]' : 'h-[2.25rem] w-[2.25rem]',
+                  item.className
+                )}
+              />
+            </div>
+          )}
+        </button>
+      </li>
+    ))
+  }
+  {
+    type === '1' && (
+      <li class="inline-block">
+        <button>
+          <slot name="close-btn-end" />
+        </button>
+      </li>
+    )
+  }
+</ul>

@@ -1,0 +1,104 @@
+---
+import { Icon } from 'astro-icon/components';
+
+import Image from '@/components/base/Image.astro';
+import Link from '@/components/base/Link.astro';
+import Tag from '@/components/ui/Tag.astro';
+import AuthorBadge from '@/components/widgets/AuthorBadge.astro';
+import PV from '@/components/widgets/PV.astro';
+import ShareList from '@/components/widgets/ShareList.astro';
+import Time from '@/components/widgets/Time.astro';
+
+import DetailCard from './DetailCard.astro';
+
+import type { ComponentProps } from 'astro/types';
+type Props = ComponentProps<typeof DetailCard>;
+const {
+  title,
+  desc,
+  imageUrl,
+  tag: nextTag,
+  time,
+  pv,
+  path,
+  name,
+} = Astro.props;
+---
+
+<Link href={path} class="block">
+  <div class="relative">
+    <Image
+      src={imageUrl}
+      alt={title}
+      loading="lazy"
+      class={'block !h-[25.0625rem] !max-h-none !w-full !max-w-none object-cover md:!h-[28.8125rem] md:!w-[39.6875rem]'}
+    />
+    <div
+      class="absolute bottom-0 left-0 w-full space-y-[0.625rem] px-[2.5rem] py-[1.875rem] md:px-[1.875rem]"
+    >
+      <div class="flex w-full items-center justify-between text-white">
+        <div class="flex gap-[0.125rem]">
+          {
+            nextTag.map((tag) => (
+              <Tag
+                textColor={tag.color || 'text-primary-dark-blue'}
+                bgColor={tag.background || 'opacity-0'}
+              >
+                <div class="line-clamp-1">{tag.ename}</div>
+              </Tag>
+            ))
+          }
+        </div>
+        <div x-data="{ open: false }" class="hidden md:block">
+          <button x-on:click.prevent="open = !open" x-show="!open">
+            <Icon
+              name="tabler:share"
+              class="h-[1.875rem] w-[1.875rem] md:h-[1.5rem] md:w-[1.5rem]"
+            /></button
+          >
+          <div x-show="open">
+            <ShareList
+              {title}
+              slug={desc}
+              description={desc}
+              url={path}
+              type="2"
+            >
+              <Icon
+                name="tabler:x"
+                x-on:click.prevent="open = !open"
+                class="h-[1.875rem] w-[1.875rem] md:h-[1.5rem] md:w-[1.5rem]"
+                slot="close-btn-end"
+              />
+            </ShareList>
+          </div>
+        </div>
+        <div class="flex items-center gap-2 md:hidden">
+          <Time {time} />
+          <PV {pv} />
+        </div>
+      </div>
+      <h3
+        class="... mb-[0.5rem] line-clamp-1 font-heading text-card-title leading-card-title text-white"
+        style="overflow-wrap: anywhere;"
+      >
+        {title}
+      </h3>
+      <div class="flex items-center justify-between text-white">
+        <AuthorBadge {name} avatar={imageUrl} className="text-white" />
+        <div class="hidden items-center gap-2 md:flex">
+          <Time {time} />
+          <PV {pv} />
+        </div>
+        <ShareList
+          {title}
+          slug={desc}
+          description={desc}
+          url={path}
+          type="3"
+          className="flex gap-[0.625rem] md:hidden"
+        />
+      </div>
+    </div>
+  </div>
+</Link>

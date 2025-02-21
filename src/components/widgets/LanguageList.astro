@@ -1,0 +1,226 @@
+---
+import Link from '../base/Link.astro';
+
+import LanguageJson from '@/config/language.json';
+import { getConfig } from '@/utils';
+
+type DataGtHrefAttributes = Record<string, string>;
+const { website } = getConfig();
+
+const dataGtHrefAttributes = (type: string) =>
+  type === 'English'
+    ? LanguageJson.reduce((acc: DataGtHrefAttributes, lang) => {
+        acc[`data-gt-href-${lang.href}`] =
+          `https://www.${website.replace(/^https?:\/\/www\./, '')}`;
+        return acc;
+      }, {} as DataGtHrefAttributes)
+    : null;
+---
+
+<div
+  class:list={['language-box_isshow', 'language-box']}
+  style="display: none"
+  x-show="openLanguageList"
+>
+  <ul class="language-list">
+    {
+      LanguageJson.map((item) => (
+        <li class:list={[item.class]}>
+          <Link
+            href={`https://${item.href}.${website.replace(/^https?:\/\/(www\.)?/, '')}`}
+            title={item.language}
+            target="_blank"
+            {...(dataGtHrefAttributes(item.language) || {})}
+          >
+            <b class="country-flag" />
+            <div class="language-list-item__text">{item.language}</div>
+          </Link>
+        </li>
+      ))
+    }
+  </ul>
+  <div
+    class="mb-3 flex w-full cursor-pointer items-center justify-center py-2"
+    @click="openLanguageList = ! openLanguageList"
+  >
+    <div class="relative h-6 w-6 cursor-pointer">
+      <span
+        class="absolute inset-0 h-0.5 w-full rotate-45 transform bg-gray-800"
+      ></span>
+      <span
+        class="absolute inset-0 h-0.5 w-full -rotate-45 transform bg-gray-800"
+      ></span>
+    </div>
+  </div>
+</div>
+<style lang="scss">
+  $country-codes: af, sq, ar, hy, az, eu, be, bg, ca, zh, zh-TW, hr, cs, da, cc,
+    nl, en, et, tl, fi, fr, gl, ka, de, el, ht, iw, hi, hu, is, id, ga, it, ja,
+    ko, la, lv, lt, mk, ms, mt, no, fa, pl, pt, ro, ru, sr, sk, sl, es, sw, sv,
+    th, tr, uk, ur, vi, cy, yi, bn, eo, bs, ceb, ny, ha, hmn, ig, jw, kk, km, lo,
+    la, mg, ml, mi, mr, mn, my, ne, pa, st, si, so, su, tg, uz, yo, zu;
+
+  a {
+    text-decoration: none !important;
+    color: #222 !important;
+  }
+
+  .language-box {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    width: 390px;
+    height: 60vh;
+    background: #fff;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    max-height: 80vh;
+    box-sizing: border-box;
+    transition: all 0.3s ease-in-out;
+    z-index: 11;
+
+    .language-list {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 5px;
+      padding: 20px;
+      list-style: none;
+      margin-bottom: 0;
+
+      .language-flag {
+        text-align: center;
+        margin-bottom: 12px;
+
+        a {
+          display: flex;
+          align-items: center;
+
+          &-item__text {
+            flex: 1;
+            word-break: auto-phrase;
+            font-size: 10pt;
+          }
+        }
+      }
+
+      .btn_close {
+        grid-column: span 3;
+        color: #686868;
+        font-size: 20px;
+        text-align: center;
+        background-color: #f8f8f8;
+        cursor: pointer;
+        padding: 8px 0;
+
+        &:hover {
+          color: #88b226;
+        }
+      }
+    }
+
+    .country-flag {
+      display: inline-block;
+      vertical-align: middle;
+      margin-right: 4px;
+      margin-top: -1px;
+      background-repeat: no-repeat;
+      background-image: url('@/assets/image/all-m.gif');
+      width: 20px;
+      height: 16px;
+    }
+  }
+
+  @mixin generate-flags {
+    @for $index from 1 through length($country-codes) {
+      $flag-name: nth($country-codes, $index);
+      $base-position: -(($index - 1) * 16px);
+      $class-selector: '.language-flag-#{$flag-name} .country-flag';
+
+      // 国旗 请勿修改
+      #{$class-selector} {
+        background-position: 0
+          if(
+            $base-position <= -992px,
+            $base-position - 432px,
+            $base-position
+          ) !important;
+      }
+    }
+  }
+
+  @include generate-flags;
+
+  .language-flag-hi .country-flag,
+  .language-flag-te .country-flag,
+  .language-flag-kn .country-flag,
+  .language-flag-ta .country-flag,
+  .language-flag-gu .country-flag {
+    // 国旗 请勿修改
+    background-position: 0 -432px !important;
+  }
+
+  .language-list-item__text {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  @media screen and (max-width: 767px) {
+    .language-box {
+      width: 90vw;
+      right: 0;
+      top: 25px;
+      position: absolute;
+      top: 0;
+      left: auto;
+      width: 90vw;
+      background: #fff;
+      padding: 0 20px;
+      transform: scale3d(0.9, 0.9, 1);
+      z-index: 11;
+      transition: all 0.3s ease-in-out;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      overflow-y: scroll;
+      max-height: 80vh;
+      right: 0;
+      margin-top: 20px;
+
+      .language-list {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+
+        &-item__text {
+          text-align: left;
+          margin-left: 12px;
+          color: #333333;
+        }
+      }
+
+      .btn-close {
+        grid-column: span 1;
+      }
+    }
+  }
+
+  @media screen and (min-width: 768px) {
+    .mobile_language {
+      display: none;
+    }
+  }
+
+  @media screen and (max-width: 767px) {
+    .mobile_language {
+      display: block;
+    }
+
+    .mobile_language_btn {
+      display: flex;
+      justify-content: center;
+      cursor: pointer;
+    }
+  }
+</style>

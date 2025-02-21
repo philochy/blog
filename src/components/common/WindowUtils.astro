@@ -1,0 +1,10 @@
+---
+import { getThemeConfig } from '@/servers';
+
+const { name: filename, url } = await getThemeConfig();
+---
+
+<script define:vars={{ filename, url }}>
+  window.filename = filename;
+  window.url = url;
+</script>

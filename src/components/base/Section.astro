@@ -1,0 +1,20 @@
+---
+import { twMerge } from 'tailwind-merge';
+
+interface Props {
+  className?: string;
+  mode?: 'list' | 'detail';
+}
+const { className, mode = 'list' } = Astro.props;
+---
+
+<div class={twMerge('section', className)}>
+  <div class="grid gap-[1.25rem] md:grid-cols-[80.625rem_1fr] md:gap-[1.75rem]">
+    <div class="flex flex-col gap-[1.25rem] md:gap-[2.5rem]">
+      {mode === 'list' && <slot name="list" />}
+      {mode === 'detail' && <slot name="detail" />}
+      <slot name="pagination" />
+    </div>
+    <slot name="sider" />
+  </div>
+</div>
