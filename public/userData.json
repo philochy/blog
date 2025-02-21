@@ -23,7 +23,7 @@
           "name": "下载测试文件_1732875484668",
           "status": "finished",
           "percentage": 100,
-          "uid": 1740036742067
+          "uid": 1740139216936
         }
       ],
       "styleconfig": {
@@ -49,35 +49,54 @@
         "list_style_type": "1",
         "modal_auto_type": "1",
         "modal_ask_type": "2",
-        "side_nav_type": "1"
+        "side_nav_type": "3"
       },
-      "updateTime": "2025-02-20 15:32:35"
+      "updateTime": "2025-02-21 20:01:15"
     }
   ],
-  "tdk_config_use": [
+  "tags": [
     {
-      "_id": "67691e664a9711efd477de51",
-      "ID": "knowledge",
-      "tdktype": 0,
-      "update_time": "2024-12-26 10:51:41"
+      "id": "44f03ece2f3006e1d44ca1813a09e29f",
+      "name": "行业见解",
+      "color": "#2575FF",
+      "background": "#E9F1FF",
+      "ename": "Industry insights",
+      "url": "/industry-insights"
     },
     {
-      "_id": "676cb12d4a9711efd462a1f5",
-      "ID": "home",
-      "tdktype": 0,
-      "update_time": "2024-12-26 09:28:13"
-    }
-  ],
-  "tdk_config": [
+      "id": "f7f4125005ed728e0790a70f058ad45a",
+      "name": "比较分析",
+      "color": "#2575FF",
+      "background": "#E9F1FF",
+      "ename": "Comparative analysis",
+      "url": "/comparative-analysis"
+    },
     {
-      "_id": "676cb12d4a9711efd462a1ef",
-      "ID": "home",
-      "description": "home desc",
-      "keywords": "home keywords",
-      "tdktype": 0,
-      "title": "home title",
-      "type": "home",
-      "update_time": "2024-12-26 09:28:13"
+      "id": "176ddf1ac951477f2f25cd8e835c94ad",
+      "_id": "675b989b02cc91d1f769b188",
+      "ID": "f107ae20b8f711efae3efbbb409c5d2c",
+      "background": "#F9F2F8",
+      "color": "#EF143B",
+      "create_time": "2024-12-13",
+      "ename": "tags1",
+      "name": "自定义标签一",
+      "optimize": false,
+      "status": 1,
+      "timestamp": 1734056051202,
+      "url": "/tags1"
+    },
+    {
+      "id": "cd2697fe85fe84fc44990e9b1e2dc8f9",
+      "_id": "67762ab04a9711efd40de8ff",
+      "ID": "362f1c50c8ce11efbfd4f9d8b5e8e9b6",
+      "background": "#D7E7F9",
+      "color": "#2086F2",
+      "create_time": "2025-01-02",
+      "ename": "Products&Services",
+      "name": "产品&服务",
+      "status": 1,
+      "timestamp": 1735797346966,
+      "url": "/products-services"
     }
   ],
   "knowledge_class": [
@@ -101,6 +120,68 @@
       "type": "knowledgeclass",
       "typeDes": "",
       "url": "cool"
+    }
+  ],
+  "tdk_config": [
+    {
+      "_id": "676cb12d4a9711efd462a1ef",
+      "ID": "home",
+      "description": "home desc",
+      "keywords": "home keywords",
+      "tdktype": 0,
+      "title": "home title",
+      "type": "home",
+      "update_time": "2024-12-26 09:28:13"
+    }
+  ],
+  "contact_share": [
+    {
+      "_id": "67b5c1881f07f7db3332d5f0",
+      "ID": "@sys_guid",
+      "Facebook": "1",
+      "createTime": "2025-02-19 19:33:27",
+      "Linkedin": "Linkedin1",
+      "WhatsApp": "4564941215",
+      "updateTime": "2025-02-21 19:59:40",
+      "Skype": "4564941215",
+      "wxcodeurl": "/icms/upload/86b5fa70ab9311ef8448a92ec0d170eb/pic/contact_share/@sys_guid/Directory1/2934349b033b5bb571dc8c5133d3d539b600bc12_1740128764416.webp",
+      "email": "4564941215@qq.com"
+    }
+  ],
+  "author": [
+    {
+      "_id": "6749321dc6688ae529f2d3e6",
+      "ID": "0586d450ae0011efac8acbb9775a3df2",
+      "avatar_url": "/icms/upload/86b5fa70ab9311ef8448a92ec0d170eb/pic/author_manager/0586d450ae0011efac8acbb9775a3df2/Directory/d009b3de9c82d158ccbf7e40fd400ed8bc3eb035e4a2_1732850185784.webp",
+      "create_time": "2024-11-29",
+      "description": "Hermann Hesse was born in Germany and began writing poetry at the age of seven in 1884. In 1904, Hesse became famous overnight with the publication of his novel \"Peter Kamen ching\". Moved to Switzerland in 1919 and obtained Swiss citizenship at the age of 46 in 1923. In 1927, the novel \"Wolf of the Wasteland\" was published, which sparked a heated debate in the German literary community. Hesse received various literary honors throughout his life, among which the most important ones were the von Trier Prize, Nobel Prize, and Goethe Prize. He won the Nobel Prize in Literature in 1946. He passed away at his home in Switzerland in 1962 at the age of 85.",
+      "name": "Hermann Hesse",
+      "status": 1,
+      "timestamp": 1732850058773
+    },
+    {
+      "_id": "67495431c6688ae52911dc61",
+      "ID": "6f104190ae1411ef8b72b3b67e78a80b",
+      "avatar_url": "/icms/upload/86b5fa70ab9311ef8448a92ec0d170eb/pic/author_manager/6f104190ae1411ef8b72b3b67e78a80b/Directory/09fa513d269759eef1dd37cdb7fb43166d22df23_1732858917663.webp",
+      "create_time": "2024-11-29",
+      "description": "Tolstoy was born into a noble family and enrolled in Kazan University in 1844. In 1847, he dropped out and returned to his hometown to try to reform the serfdom system on his own territory. Served in the Caucasian army from 1851 to 1854 and began writing. Participated in the Crimean War from 1854 to 1855. In November 1855, he entered the literary world in St. Petersburg. In 1857, Tolstoy went abroad and saw the numerous contradictions in capitalist society, but could not find a way to eliminate social evil. He had to call on people to live according to the \"eternal religious truth\". From 1860 to 1861, in order to investigate European education, Tolstoy went abroad again, met Herzen, listened to Dickens' speeches, and met Proudhon. From 1863 to 1869, Tolstoy wrote the long historical novel \"War and Peace\". From 1873 to 1877, he completed his second milestone masterpiece, Anna Karenina, after 12 revisions. In the late 1970s, Tolstoy's worldview underwent a major change and he wrote \"Confessions\" (1879-1882). Created in the 1980s: Screenplays \"The Power of Darkness\" (1886), \"The Fruit of Education\" (1891), novellas \"The Devil\" (1889), \"The Death of Ivan Ilyich\" (1886), \"Kreutzer Sonata\" (1891), \"Haze Murat\" (1886-1904); The short story \"After the Ball\" (1903), especially the novel \"Resurrection\" created from 1889-1899, is a summary of his long-term thoughts and artistic exploration.",
+      "name": "Лев Николаевич Толстой",
+      "status": 1,
+      "timestamp": 1732858825769
+    }
+  ],
+  "tdk_config_use": [
+    {
+      "_id": "67691e664a9711efd477de51",
+      "ID": "knowledge",
+      "tdktype": 0,
+      "update_time": "2024-12-26 10:51:41"
+    },
+    {
+      "_id": "676cb12d4a9711efd462a1f5",
+      "ID": "home",
+      "tdktype": 0,
+      "update_time": "2024-12-26 09:28:13"
     }
   ],
   "messageconfig": [
@@ -197,84 +278,6 @@
       "url": "/icms/upload/86b5fa70ab9311ef8448a92ec0d170eb/pic/stylemanger_banners/3d7a6fe0c35711efb15b5dd7be28161c/Directory5/m-2_1735196493278.webp",
       "width": 700,
       "updateTime": "2024-12-26 15:04:06"
-    }
-  ],
-  "contact_share": [
-    {
-      "_id": "67b5c1881f07f7db3332d5f0",
-      "ID": "@sys_guid",
-      "Facebook": "1",
-      "createTime": "2025-02-19 19:33:27",
-      "Linkedin": "Linkedin1",
-      "WhatsApp": "4564941215,123132112421",
-      "updateTime": "2025-02-21 10:12:35"
-    }
-  ],
-  "tags": [
-    {
-      "id": "44f03ece2f3006e1d44ca1813a09e29f",
-      "name": "行业见解",
-      "color": "#2575FF",
-      "background": "#E9F1FF",
-      "ename": "Industry insights",
-      "url": "/industry-insights"
-    },
-    {
-      "id": "f7f4125005ed728e0790a70f058ad45a",
-      "name": "比较分析",
-      "color": "#2575FF",
-      "background": "#E9F1FF",
-      "ename": "Comparative analysis",
-      "url": "/comparative-analysis"
-    },
-    {
-      "id": "176ddf1ac951477f2f25cd8e835c94ad",
-      "_id": "675b989b02cc91d1f769b188",
-      "ID": "f107ae20b8f711efae3efbbb409c5d2c",
-      "background": "#F9F2F8",
-      "color": "#EF143B",
-      "create_time": "2024-12-13",
-      "ename": "tags1",
-      "name": "自定义标签一",
-      "optimize": false,
-      "status": 1,
-      "timestamp": 1734056051202,
-      "url": "/tags1"
-    },
-    {
-      "id": "cd2697fe85fe84fc44990e9b1e2dc8f9",
-      "_id": "67762ab04a9711efd40de8ff",
-      "ID": "362f1c50c8ce11efbfd4f9d8b5e8e9b6",
-      "background": "#D7E7F9",
-      "color": "#2086F2",
-      "create_time": "2025-01-02",
-      "ename": "Products&Services",
-      "name": "产品&服务",
-      "status": 1,
-      "timestamp": 1735797346966,
-      "url": "/products-services"
-    }
-  ],
-  "author": [
-    {
-      "_id": "6749321dc6688ae529f2d3e6",
-      "ID": "0586d450ae0011efac8acbb9775a3df2",
-      "avatar_url": "/icms/upload/86b5fa70ab9311ef8448a92ec0d170eb/pic/author_manager/0586d450ae0011efac8acbb9775a3df2/Directory/d009b3de9c82d158ccbf7e40fd400ed8bc3eb035e4a2_1732850185784.webp",
-      "create_time": "2024-11-29",
-      "description": "Hermann Hesse was born in Germany and began writing poetry at the age of seven in 1884. In 1904, Hesse became famous overnight with the publication of his novel \"Peter Kamen ching\". Moved to Switzerland in 1919 and obtained Swiss citizenship at the age of 46 in 1923. In 1927, the novel \"Wolf of the Wasteland\" was published, which sparked a heated debate in the German literary community. Hesse received various literary honors throughout his life, among which the most important ones were the von Trier Prize, Nobel Prize, and Goethe Prize. He won the Nobel Prize in Literature in 1946. He passed away at his home in Switzerland in 1962 at the age of 85.",
-      "name": "Hermann Hesse",
-      "status": 1,
-      "timestamp": 1732850058773
-    },
-    {
-      "_id": "67495431c6688ae52911dc61",
-      "ID": "6f104190ae1411ef8b72b3b67e78a80b",
-      "avatar_url": "/icms/upload/86b5fa70ab9311ef8448a92ec0d170eb/pic/author_manager/6f104190ae1411ef8b72b3b67e78a80b/Directory/09fa513d269759eef1dd37cdb7fb43166d22df23_1732858917663.webp",
-      "create_time": "2024-11-29",
-      "description": "Tolstoy was born into a noble family and enrolled in Kazan University in 1844. In 1847, he dropped out and returned to his hometown to try to reform the serfdom system on his own territory. Served in the Caucasian army from 1851 to 1854 and began writing. Participated in the Crimean War from 1854 to 1855. In November 1855, he entered the literary world in St. Petersburg. In 1857, Tolstoy went abroad and saw the numerous contradictions in capitalist society, but could not find a way to eliminate social evil. He had to call on people to live according to the \"eternal religious truth\". From 1860 to 1861, in order to investigate European education, Tolstoy went abroad again, met Herzen, listened to Dickens' speeches, and met Proudhon. From 1863 to 1869, Tolstoy wrote the long historical novel \"War and Peace\". From 1873 to 1877, he completed his second milestone masterpiece, Anna Karenina, after 12 revisions. In the late 1970s, Tolstoy's worldview underwent a major change and he wrote \"Confessions\" (1879-1882). Created in the 1980s: Screenplays \"The Power of Darkness\" (1886), \"The Fruit of Education\" (1891), novellas \"The Devil\" (1889), \"The Death of Ivan Ilyich\" (1886), \"Kreutzer Sonata\" (1891), \"Haze Murat\" (1886-1904); The short story \"After the Ball\" (1903), especially the novel \"Resurrection\" created from 1889-1899, is a summary of his long-term thoughts and artistic exploration.",
-      "name": "Лев Николаевич Толстой",
-      "status": 1,
-      "timestamp": 1732858825769
     }
   ],
   "knowledge": [

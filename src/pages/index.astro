@@ -24,7 +24,7 @@ const {
   props: { ename = null },
   url: { pathname },
 } = Astro;
-const { list, form, banner, modal } = await getThemeConfig();
+const { list, form, banner, modal, side } = await getThemeConfig();
 const { list: dataList, hotList } = await getBLogList(ename);
 const { banner: bannerConfig } = await getBanner();
 const {
@@ -36,6 +36,7 @@ const { bannerStyle, listStyle, listPageSize, formStyleId } = themeConfig({
   form,
   banner,
   modal,
+  side,
 });
 const { data: listData, ...rest } = paginateList<ListItem>(
   pathname,

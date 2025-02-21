@@ -54,17 +54,20 @@ export const themeConfig = ({
   banner,
   form,
   modal,
+  side,
 }: {
   list: number;
   banner: number;
   form: number;
   modal: number;
+  side: number;
 }) => ({
   bannerStyle: getThemeByTag('banner', banner)?.styleId || 'default',
   listStyle: getThemeByTag('list', list)?.styleId || 'one-per-row',
   listPageSize: getThemeByTag('list', list)?.pageSize || 9,
   modalStyleId: getThemeByTag('modal', modal)?.styleId || 'compact',
   formStyleId: getThemeByTag('form', form)?.styleId || 'compact',
+  sideStyleId: getThemeByTag('side', side)?.styleId || 'style-one',
 });
 
 /**

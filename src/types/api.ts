@@ -55,6 +55,7 @@ export interface StyleConfig {
   list_style_type: string;
   modal_auto_type: string;
   modal_ask_type: string;
+  side_nav_type: string;
 }
 export interface StyleSettings {
   _id: string;
@@ -151,6 +152,7 @@ export interface DataRoot {
   messageconfig: MessageConfig[];
   knowledge: Blog[];
   tdk_config: TDK[];
+  contact_share: ContactShare[];
 }
 
 export interface ContactShare {
@@ -164,8 +166,8 @@ export interface ContactShare {
   Pinterest?: string;
   YouTuBe?: string;
   MSN?: string;
-  email?: string;
-  Skype?: string;
-  WhatsApp?: string;
+  email?: string | string[];
+  Skype?: string | string[];
+  WhatsApp?: string | string[];
   wxcodeurl?: string;
 }

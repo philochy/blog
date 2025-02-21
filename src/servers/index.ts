@@ -37,6 +37,7 @@ export const getThemeConfig = async () => {
           list_style_type = '1',
           modal_ask_type = '1',
           modal_auto_type = '1',
+          side_nav_type = '1',
         },
         file_urls: [{ url = null, name = null } = {}],
       },
@@ -50,6 +51,7 @@ export const getThemeConfig = async () => {
     list: parseInt(list_style_type),
     modal: parseInt(modal_ask_type),
     form: parseInt(modal_auto_type),
+    side: parseInt(side_nav_type),
     title,
     description,
     keywords,
@@ -127,4 +129,9 @@ export const getFormConfig = async () => {
 export const getCategory = async () => {
   const { knowledge_class } = await fetchData();
   return knowledge_class.concat([]);
+};
+
+export const getContactShare = async () => {
+  const { contact_share } = await fetchData();
+  return contact_share;
 };

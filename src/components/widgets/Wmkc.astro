@@ -1,14 +1,250 @@
 ---
+import { Icon } from 'astro-icon/components';
+
+import Image from '@/components/base/Image.astro';
+
 import type { theme } from '@/config/theme';
 import type { ContactShare } from '@/types/api';
 
 type AvailableStyles = (typeof theme)['side']['availableStyles'];
 interface Props {
-  bannerStyle: AvailableStyles[number]['styleId'];
-  bannerConfig: Record<number, ContactShare[]>;
+  sideStyleId: AvailableStyles[number]['styleId'];
+  sideConfig: ContactShare[];
 }
 
-const { bannerStyle: styleId, bannerConfig } = Astro.props;
+const { sideStyleId: styleId, sideConfig } = Astro.props;
+
+const data = [];
+const sideObj: ContactShare = { ...sideConfig[0] };
+
+interface ContactType {
+  icon: string;
+  name: string;
+  type: string;
+  sort: number;
+  hrefBuilder?: (v: string) => string;
+  href?: string;
+  content?: string | null;
+}
+
+interface ContactTypes {
+  email: ContactType;
+  WhatsApp: ContactType;
+  Skype: ContactType;
+  wxcodeurl: ContactType;
+}
+
+const contactTypes: ContactTypes = {
+  email: {
+    icon: 'tabler:mail-filled',
+    name: 'E-Mail',
+    type: 'email',
+    sort: 1,
+    hrefBuilder: (v) => `mailto:${v}`,
+  },
+  WhatsApp: {
+    icon: 'tabler:brand-whatsapp',
+    name: 'WhatsApp',
+    type: 'WhatsApp',
+    sort: 2,
+    hrefBuilder: (v) => `https://web.whatsapp.com/send?l=en&phone=${v}`,
+  },
+  Skype: {
+    icon: 'tabler:brand-skype',
+    name: 'Skype',
+    type: 'Skype',
+    sort: 3,
+    hrefBuilder: (v) => `skype:${v}?chat`,
+  },
+  wxcodeurl: {
+    icon: 'tabler:brand-wechat',
+    name: 'WeChat',
+    type: 'wxcodeurl',
+    sort: 4,
+    href: 'weixin://dl/about',
+    content: null,
+  },
+};
+
+for (let item in sideObj) {
+  if (item in contactTypes) {
+    const contactType = contactTypes[item as keyof ContactTypes];
+    if (item === 'wxcodeurl') {
+      data.push({
+        ...contactType,
+        image: sideObj[item],
+      });
+    } else if (typeof sideObj[item as keyof ContactShare] === 'string') {
+      const values = (sideObj[item as keyof ContactShare] as string)
+        .split(',')
+        .filter((v) => v);
+      values.forEach((v) => {
+        data.push({
+          ...contactType,
+          href: contactType.hrefBuilder
+            ? contactType.hrefBuilder(v)
+            : contactType.href,
+          content: v,
+        });
+      });
+    }
+  }
+}
+data.sort((a, b) => a.sort - b.sort);
 ---
 
-<div class="fixed right-1 top-1/2 -translate-y-1/2">11111</div>
+<div
+  class:list={[
+    'fixed top-1/2 z-[100] -translate-y-1/2',
+    {
+      'rounded-lg right-[.625rem] bg-white shadow-lg': styleId === 'style-one',
+    },
+    {
+      'rounded-full border border-[#1111111a] right-[.625rem] bg-white shadow-lg':
+        styleId === 'style-two',
+    },
+    {
+      'right-0 translate-x-[calc(100%_-_3.25rem)]': styleId === 'style-three',
+    },
+  ]}
+>
+  {
+    styleId === 'style-one' && (
+      <div>
+        {data.map((item, index) => (
+          <div class={`group/1 px-[.625rem]`}>
+            <a
+              href={item.href}
+              data-aw-social-ask={item.type}
+              data-aw-social-ask-content={item?.content}
+              target="_blank"
+              rel="nofollow"
+            >
+              <div
+                class={`flex flex-col items-center justify-center gap-1 py-[1.125rem] ${index ? 'border-t-[1px] border-[#DDD]' : ''}`}
+              >
+                <Icon
+                  name={item.icon}
+                  class:list={[
+                    'text-[#111] h-8 w-8 group-hover/1:text-primary-blue',
+                  ]}
+                />
+
+                <div class="text-[12px] text-[#111] group-hover/1:text-primary-blue">
+                  {item.name}
+                </div>
+              </div>
+            </a>
+            {item.image && (
+              <div
+                class:list={[
+                  `w-[17rem] h-[17rem] mr-[100%] hidden opacity-0 transition-all duration-300`,
+                  'absolute left-0 top-1/2 -translate-y-1/2',
+                  'group-hover/1:-left-[calc(24.1875rem_+_-7.1875rem)] group-hover/1:block group-hover/1:opacity-100',
+                ]}
+              >
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  class="!max-w-[17rem !h-[17rem] !max-h-[17rem] !w-[17rem]"
+                />
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    )
+  }
+  {
+    styleId === 'style-two' && (
+      <div class="flex flex-col gap-[1.875rem] py-[1.875rem]">
+        {data.map((item) => (
+          <div class="group/1 px-[.625rem]">
+            <a
+              href={item.href}
+              data-aw-social-ask={item.type}
+              data-aw-social-ask-content={item?.content}
+              target="_blank"
+              rel="nofollow"
+            >
+              <div class="flex flex-col items-center justify-center gap-1">
+                <Icon
+                  name={item.icon}
+                  class:list={[
+                    'text-[#111] h-8 w-8 group-hover/1:text-primary-blue',
+                  ]}
+                />
+              </div>
+            </a>
+            {item.image && (
+              <div
+                class:list={[
+                  'w-[17rem] h-[17rem] hidden opacity-0 transition-all duration-300',
+                  'absolute left-0 top-1/2 -translate-y-1/2',
+                  'group-hover/1:-left-[calc(27.625rem_-10.625rem)] group-hover/1:block group-hover/1:opacity-100',
+                ]}
+              >
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  class="!max-w-[17rem !h-[17rem] !max-h-[17rem] !w-[17rem]"
+                />
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    )
+  }
+  {
+    styleId === 'style-three' && (
+      <div class="flex flex-col gap-1">
+        {data.map((item) => (
+          <div class="group/1 flex">
+            <a
+              href={item.href}
+              data-aw-social-ask={item.type}
+              data-aw-social-ask-content={item?.content}
+              target="_blank"
+              rel="nofollow"
+              class:list={[
+                'w-auto translate-x-0 rounded-l-full bg-primary-blue p-[.625rem] shadow-lg transition-all duration-300 ease-out',
+                {
+                  'group-hover/1:translate-x-[calc(-100%_+_3.375rem)]':
+                    item.content,
+                },
+              ]}
+            >
+              <div class="flex items-center gap-[.625rem]">
+                <div class="flex h-8 w-8 flex-col items-center justify-center gap-1 rounded-[50%] bg-white">
+                  <Icon
+                    name={item.icon}
+                    class:list={['text-primary-blue h-[20px] w-[20px]']}
+                  />
+                </div>
+                {item.content ? (
+                  <div class="text-white">{item.content}</div>
+                ) : null}
+              </div>
+            </a>
+            {item.image && (
+              <div
+                class:list={[
+                  'mr-[100%] hidden h-[17rem] w-[17rem] opacity-0 transition-all duration-300 ease-in-out',
+                  'absolute left-0 top-1/2 -translate-y-1/2',
+                  'group-hover/1:-left-[calc(27.625rem_-10.625rem)] group-hover/1:block group-hover/1:opacity-100',
+                ]}
+              >
+                <Image
+                  src={item.image}
+                  alt={item.name}
+                  class="!max-w-[17rem !h-[17rem] !max-h-[17rem] !w-[17rem]"
+                />
+              </div>
+            )}
+          </div>
+        ))}
+      </div>
+    )
+  }
+</div>

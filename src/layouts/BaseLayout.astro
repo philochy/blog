@@ -12,12 +12,13 @@ import Wmkc from '@/components/widgets/Wmkc.astro';
 
 import { DefaultModal, PromptModal } from '@/pages/_components';
 
-import { getThemeConfig, getFormConfig } from '@/servers';
+import { getThemeConfig, getFormConfig, getContactShare } from '@/servers';
 import { getConfig, themeConfig } from '@/utils';
 const SITE = getConfig();
 const themeConfigResult = await getThemeConfig();
+const contactShare = await getContactShare();
 const { modal } = await getFormConfig();
-const { modalStyleId } = themeConfig(themeConfigResult);
+const { modalStyleId, sideStyleId } = themeConfig(themeConfigResult);
 
 export interface Props {
   title?: string;
@@ -64,7 +65,7 @@ const {
     <main><slot /></main>
     <OrderTimeline />
     <Footer />
-    <Wmkc />
+    <Wmkc {sideStyleId} sideConfig={contactShare} />
     {
       modalStyleId === 'compact' && (
         <PromptModal
